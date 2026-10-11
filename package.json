@@ -1,0 +1,55 @@
+{
+  "name": "miradel-fondation",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3420",
+    "build": "next build --webpack",
+    "start": "next start",
+    "start:local": "next start -p 3420",
+    "lint": "eslint src e2e db",
+    "typecheck": "next typegen && tsc --noEmit",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate && tsx db/embed-migrations.ts",
+    "db:migrate": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs migrate",
+    "db:seed": "tsx --env-file=.env.local db/seed.ts",
+    "db:studio": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs studio",
+    "db:local:start": "docker start miradel-mariadb || docker run -d --name miradel-mariadb -e MARIADB_ROOT_PASSWORD=miradel-root -e MARIADB_DATABASE=miradel -e MARIADB_USER=miradel -e MARIADB_PASSWORD=miradel-local -p 3308:3306 mariadb:11.4",
+    "db:migrate:hostinger": "node --env-file=.env.hostinger node_modules/drizzle-kit/bin.cjs migrate",
+    "db:seed:hostinger": "tsx --env-file=.env.hostinger db/seed.ts"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "bcryptjs": "^3.0.3",
+    "drizzle-orm": "^0.45.4",
+    "mysql2": "^3.24.5",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.0",
+    "postcss": "^8.5.29",
+    "prettier": "^3.9.10",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+
+/*
+ * Charte MIRADEL — PROPOSITION à valider avec la fondation (CLAUDE.md §9) :
+ * tons terre et végétal (vert profond, ocre, crème).
+ * Toutes les couleurs sont définies ici, une seule fois : changer de charte = modifier ce bloc.
+ * Contrastes vérifiés AA : ink / cream, accent / cream, accent-ink / accent, ochre / cream.
+ */
+:root {
+  --cream: #f6f1e7;
+  --cream-deep: #ebe3d3;
+  --ink: #1c2a21;
+  --ink-soft: #4b5a4f;
+  --line: #d6ccb8;
+  --accent: #1f5a3d;
+  --accent-ink: #f6f1e7;
+  --accent-soft: #dde7da;
+  --ochre: #8f5114;
+  --ochre-soft: #f0dfc6;
+  --photo-a: #c9b48f;
+  --photo-b: #6f7f5c;
+  --whatsapp: #1f7a4d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cream: #141a16;
+    --cream-deep: #1d2620;
+    --ink: #eee8dc;
+    --ink-soft: #b9c2b5;
+    --line: #34413a;
+    --accent: #8fcfa5;
+    --accent-ink: #10221a;
+    --accent-soft: #23352a;
+    --ochre: #e3a866;
+    --ochre-soft: #3a2a19;
+    --photo-a: #3b4a3f;
+    --photo-b: #26302a;
+    --whatsapp: #5fcf94;
+  }
+}
+
+@theme inline {
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-ochre: var(--ochre);
+  --color-ochre-soft: var(--ochre-soft);
+  --color-whatsapp: var(--whatsapp);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-fraunces);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Mention « [À COMPLÉTER] » visible tant que la fondation n'a pas fourni l'information. */
+.to-complete {
+  background: var(--ochre-soft);
+  color: var(--ochre);
+  font-weight: 600;
+}
+
+/* Emplacement photo : reste digne tant que la vraie photo n'est pas fournie. */
+.photo-slot {
+  background:
+    radial-gradient(
+      120% 90% at 20% 10%,
+      color-mix(in oklab, var(--photo-a) 85%, white 15%),
+      transparent 60%
+    ),
+    linear-gradient(160deg, var(--photo-a), var(--photo-b));
+}
+
+/*
+ * Apparition au chargement (héro) et au défilement (sections), en CSS pur.
+ * Sans prise en charge de animation-timeline, le contenu s'affiche simplement.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.9s var(--ease-out-soft) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}

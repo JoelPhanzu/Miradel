@@ -1,0 +1,10 @@
+.next
+node_modules
+package-lock.json
+supabase/.temp
+test-results
+playwright-report
+src/db/migrations.generated.ts
+Mawazo Hair Beauty
+Fondation MIRADEL FEVEPA
+migration/source
