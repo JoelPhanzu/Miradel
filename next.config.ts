@@ -21,6 +21,12 @@ const LEGACY_REDIRECTS: { source: string; destination: string }[] = [
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
+  experimental: {
+    // Le serveur de build Hostinger annonce 63 processeurs mais limite le nombre de fils
+    // d'exécution : avec un worker par processeur, la compilation échoue (« OS can't spawn
+    // worker thread », os error 11). On limite donc le nombre de workers.
+    cpus: 2,
+  },
   // Les anciennes adresses WordPress finissent par « / » : Next retire d'abord ce « / »,
   // puis applique ces redirections.
   async redirects() {
