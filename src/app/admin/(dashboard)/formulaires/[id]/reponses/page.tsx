@@ -76,7 +76,7 @@ export default async function ResponsesPage({
                     href={buildWhatsAppUrl(phone, greeting)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-whatsapp inline-flex min-h-12 w-fit items-center gap-2 rounded-full px-5 text-sm font-semibold text-white dark:text-[#10261a]"
+                    className="bg-whatsapp inline-flex min-h-12 w-fit items-center gap-2 rounded-full px-5 text-sm font-semibold text-navy-950"
                   >
                     <WhatsappLogo size={18} weight="fill" aria-hidden />
                     Répondre sur WhatsApp

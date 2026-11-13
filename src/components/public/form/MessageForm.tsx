@@ -65,7 +65,7 @@ export function MessageForm({ kind }: { kind: Kind }) {
 
   if (done) {
     return (
-      <p role="status" className="bg-accent-soft p-6 text-lg font-semibold">
+      <p role="status" className="bg-green-50 p-6 text-lg font-semibold text-green-700">
         {text.done}
       </p>
     )
@@ -145,7 +145,7 @@ export function MessageForm({ kind }: { kind: Kind }) {
         </Link>
       </p>
       {errors.form && (
-        <p role="alert" className="text-accent font-semibold">
+        <p role="alert" className="text-ochre font-semibold">
           {errors.form}
         </p>
       )}
@@ -153,7 +153,7 @@ export function MessageForm({ kind }: { kind: Kind }) {
         <button
           type="submit"
           disabled={pending}
-          className="bg-accent text-accent-ink hover:bg-ink hover:text-cream inline-flex min-h-12 items-center rounded-full px-8 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-60"
+          className="text-navy-950 inline-flex min-h-12 items-center rounded-full bg-orange-500 px-8 text-sm font-bold font-semibold transition hover:bg-orange-400 active:scale-[0.98] disabled:opacity-60"
         >
           {pending ? 'Envoi…' : text.submit}
         </button>

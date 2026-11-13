@@ -109,7 +109,7 @@ export function DonationForm({
 
   if (done) {
     return (
-      <div role="status" className="bg-accent-soft grid gap-5 p-6 md:p-10">
+      <div role="status" className="grid gap-5 bg-green-50 p-6 text-green-700 md:p-10">
         <h2 className="font-display text-4xl font-bold">Merci pour votre générosité</h2>
         <p className="max-w-[52ch]">
           {done.reference
@@ -126,7 +126,7 @@ export function DonationForm({
             href={done.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-whatsapp inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold text-white dark:text-[#10261a]"
+            className="bg-whatsapp text-navy-950 inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold"
           >
             <WhatsappLogo size={18} weight="fill" aria-hidden />
             Prévenir la fondation sur WhatsApp
@@ -306,7 +306,7 @@ export function DonationForm({
       </Field>
 
       {errors.form && (
-        <p role="alert" className="text-accent font-semibold">
+        <p role="alert" className="text-ochre font-semibold">
           {errors.form}
         </p>
       )}
@@ -315,7 +315,7 @@ export function DonationForm({
         <button
           type="submit"
           disabled={pending}
-          className="bg-accent text-accent-ink hover:bg-ink hover:text-cream inline-flex min-h-12 items-center rounded-full px-8 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-60"
+          className="text-navy-950 inline-flex min-h-12 items-center rounded-full bg-orange-500 px-8 text-sm font-bold font-semibold transition hover:bg-orange-400 active:scale-[0.98] disabled:opacity-60"
         >
           {pending ? 'Envoi…' : 'Déclarer mon don'}
         </button>

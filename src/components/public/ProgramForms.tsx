@@ -22,7 +22,7 @@ async function FormsContent({ programId }: { programId: string }) {
 
   return (
     <section id="participer" className="bg-accent-soft scroll-mt-28">
-      <div className="mx-auto grid max-w-[1320px] gap-16 px-4 py-16 md:px-8 md:py-20">
+      <div className="mx-auto grid max-w-7xl gap-16 px-4 py-14 sm:px-6 md:py-20">
         {open.map((form) => (
           <div key={form.id} className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
             <div>

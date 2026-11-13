@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
-import { ArrowLeft, HandHeart } from '@phosphor-icons/react/ssr'
+import { HandHeart } from '@phosphor-icons/react/ssr'
 import { ButtonLink } from '@/components/public/ButtonLink'
 import { DONATE_HREF } from '@/components/public/nav'
+import { PageHeader } from '@/components/public/PageHeader'
 import { PhotoSlot } from '@/components/public/PhotoSlot'
+import { IMAGES } from '@/content/images'
 import { SimpleMarkdown } from '@/components/public/SimpleMarkdown'
 import { formatLongDate } from '@/lib/dates'
 import { getPostBySlug, getPublishedPosts, getPublishedPrograms } from '@/lib/data/public'
@@ -40,50 +42,48 @@ async function Article({ params }: Pick<PageProps<'/actualites/[slug]'>, 'params
   const program = programs.find((p) => p.id === post.programId)
 
   return (
-    <article className="mx-auto max-w-[1320px] px-4 pt-8 pb-24 md:px-8">
-      <Link
-        href="/actualites"
-        className="text-ink-soft hover:text-ink inline-flex min-h-11 items-center gap-2 text-sm"
-      >
-        <ArrowLeft size={16} aria-hidden />
-        Toutes les actualités
-      </Link>
-      <header className="mx-auto mt-8 max-w-3xl">
-        <p className="text-ink-soft text-sm">
-          <time dateTime={post.publishedAt}>{formatLongDate(post.publishedAt)}</time>
-          {program && (
-            <>
-              {' · '}
-              <Link
-                href={`/nos-programmes/${program.slug}`}
-                className="underline underline-offset-4"
-              >
-                {program.title}
-              </Link>
-            </>
-          )}
-        </p>
-        <h1 className="rise font-display mt-4 pb-1 text-5xl leading-[1.04] font-bold tracking-tight md:text-6xl">
-          {post.title}
-        </h1>
-        {post.excerpt && <p className="text-ink-soft mt-6 text-xl">{post.excerpt}</p>}
-      </header>
-      {post.imageUrl && (
-        <PhotoSlot
-          src={post.imageUrl}
-          alt={post.title}
-          brief=""
-          className="mx-auto mt-12 aspect-[16/9] max-w-5xl"
-          sizes="(min-width: 1024px) 1024px, 100vw"
-          priority
-        />
-      )}
-      <div className="mx-auto mt-12 max-w-[68ch]">
-        {post.content && <SimpleMarkdown text={post.content} />}
-        <ButtonLink href={DONATE_HREF} className="mt-14">
-          <HandHeart size={18} aria-hidden />
-          Soutenir nos actions
-        </ButtonLink>
+    <article>
+      <PageHeader
+        title={post.title}
+        intro={post.excerpt}
+        imageUrl={post.imageUrl}
+        image={IMAGES.pages.actualites}
+        crumbs={[{ href: '/actualites', label: 'Actualités' }]}
+        meta={
+          <p className="text-sm text-white/90">
+            <time dateTime={post.publishedAt}>{formatLongDate(post.publishedAt)}</time>
+            {program && (
+              <>
+                {' · '}
+                <Link
+                  href={`/nos-programmes/${program.slug}`}
+                  className="font-semibold text-orange-400 underline underline-offset-4 hover:text-orange-300"
+                >
+                  {program.title}
+                </Link>
+              </>
+            )}
+          </p>
+        }
+      />
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-14">
+        {post.imageUrl && (
+          <PhotoSlot
+            src={post.imageUrl}
+            alt={post.title}
+            brief=""
+            className="mx-auto aspect-[16/9] max-w-5xl rounded-xl"
+            sizes="(min-width: 1024px) 1024px, 100vw"
+            priority
+          />
+        )}
+        <div className="mx-auto mt-12 max-w-[68ch]">
+          {post.content && <SimpleMarkdown text={post.content} />}
+          <ButtonLink href={DONATE_HREF} className="mt-14">
+            <HandHeart size={18} weight="fill" aria-hidden />
+            Soutenir nos actions
+          </ButtonLink>
+        </div>
       </div>
     </article>
   )
@@ -91,7 +91,7 @@ async function Article({ params }: Pick<PageProps<'/actualites/[slug]'>, 'params
 
 export default function PostPage({ params }: PageProps<'/actualites/[slug]'>) {
   return (
-    <Suspense fallback={<div className="mx-auto h-[70vh] max-w-[1320px]" />}>
+    <Suspense fallback={<div className="mx-auto h-[70vh] max-w-7xl" />}>
       <Article params={params} />
     </Suspense>
   )

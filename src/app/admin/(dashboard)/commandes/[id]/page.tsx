@@ -56,7 +56,7 @@ export default async function OrderPage({ params }: PageProps<'/admin/commandes/
             href={reply}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-whatsapp mt-5 inline-flex min-h-12 items-center gap-2 rounded-full px-5 text-sm font-semibold text-white dark:text-[#10261a]"
+            className="bg-whatsapp mt-5 inline-flex min-h-12 items-center gap-2 rounded-full px-5 text-sm font-semibold text-navy-950"
           >
             <WhatsappLogo size={18} weight="fill" aria-hidden />
             Répondre sur WhatsApp

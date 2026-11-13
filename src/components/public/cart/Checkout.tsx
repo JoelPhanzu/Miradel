@@ -155,7 +155,7 @@ export function Checkout({
         <div>
           <a
             href={done.url}
-            className="bg-whatsapp inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold text-white dark:text-[#10261a]"
+            className="bg-whatsapp text-navy-950 inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold"
           >
             <WhatsappLogo size={18} weight="fill" aria-hidden />
             Ouvrir WhatsApp
@@ -173,7 +173,7 @@ export function Checkout({
         <p className="font-display text-3xl">Votre panier est vide.</p>
         <Link
           href="/vitrine"
-          className="bg-accent text-accent-ink mt-6 inline-flex min-h-12 items-center rounded-full px-6 text-sm font-semibold"
+          className="text-navy-950 mt-6 inline-flex min-h-12 items-center rounded-full bg-orange-500 px-6 text-sm font-bold transition hover:bg-orange-400"
         >
           Voir la Vitrine de l’entrepreneur
         </Link>
@@ -258,7 +258,7 @@ export function Checkout({
           l’envoi et confirmé sur WhatsApp.
         </p>
         {errors.items && (
-          <p className="text-accent mt-4 font-semibold" role="alert">
+          <p className="text-ochre mt-4 font-semibold" role="alert">
             {errors.items}
           </p>
         )}
@@ -361,7 +361,7 @@ export function Checkout({
             </div>
           )}
           {errors.paymentMethod && (
-            <p className="text-accent text-sm font-semibold" role="alert">
+            <p className="text-ochre text-sm font-semibold" role="alert">
               {errors.paymentMethod}
             </p>
           )}
@@ -379,7 +379,7 @@ export function Checkout({
         </p>
 
         {errors.form && (
-          <p className="text-accent font-semibold" role="alert">
+          <p className="text-ochre font-semibold" role="alert">
             {errors.form}
           </p>
         )}
@@ -388,7 +388,7 @@ export function Checkout({
           <button
             type="submit"
             disabled={pending}
-            className="bg-accent text-accent-ink hover:bg-ink hover:text-cream inline-flex min-h-12 items-center gap-2 rounded-full px-8 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-60"
+            className="text-navy-950 inline-flex min-h-12 items-center gap-2 rounded-full bg-orange-500 px-8 text-sm font-bold font-semibold transition hover:bg-orange-400 active:scale-[0.98] disabled:opacity-60"
           >
             <WhatsappLogo size={18} weight="fill" aria-hidden />
             {pending ? 'Envoi…' : 'Commander sur WhatsApp'}

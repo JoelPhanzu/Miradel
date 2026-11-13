@@ -40,7 +40,7 @@ export function AddToCart({ product, compact }: AddToCartProps) {
     return (
       <Link
         href={`/produits/${product.slug}`}
-        className="border-ink/70 hover:bg-ink hover:text-cream inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-semibold transition"
+        className="border-navy-800 text-navy-800 hover:bg-navy-800 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border-2 px-3 text-sm font-bold transition hover:text-white"
       >
         Choisir
       </Link>
@@ -89,7 +89,7 @@ export function AddToCart({ product, compact }: AddToCartProps) {
           </fieldset>
         ))}
 
-      <div className="flex flex-wrap items-center gap-3">
+      <div className={compact ? 'flex' : 'flex flex-wrap items-center gap-3'}>
         {!compact && (
           <div className="border-line flex items-center rounded-full border">
             <button
@@ -118,11 +118,15 @@ export function AddToCart({ product, compact }: AddToCartProps) {
           onClick={handleAdd}
           className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold transition active:scale-[0.98] ${
             compact
-              ? 'border-ink/70 hover:bg-ink hover:text-cream min-h-11 border px-4 text-sm'
-              : 'bg-accent text-accent-ink hover:bg-ink hover:text-cream min-h-12 px-7 text-sm'
+              ? 'text-navy-950 min-h-11 w-full bg-orange-500 px-3 text-center text-sm leading-tight font-bold hover:bg-orange-400'
+              : 'text-navy-950 min-h-12 bg-orange-500 px-7 text-sm font-bold hover:bg-orange-400'
           }`}
         >
-          {added ? <Check size={18} aria-hidden /> : <ShoppingBag size={18} aria-hidden />}
+          {added ? (
+            <Check size={18} className="shrink-0" aria-hidden />
+          ) : (
+            <ShoppingBag size={18} weight="fill" className="shrink-0" aria-hidden />
+          )}
           {added ? 'Ajouté' : 'Ajouter au panier'}
         </button>
         {added && !compact && (

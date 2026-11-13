@@ -20,6 +20,10 @@ const LEGACY_REDIRECTS: { source: string; destination: string }[] = [
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  images: {
+    // Photos d'illustration provisoires (src/content/images.ts), en attendant les vraies photos.
+    remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' }],
+  },
   partialPrefetching: true,
   experimental: {
     // Le serveur de build Hostinger annonce 63 processeurs mais limite le nombre de fils

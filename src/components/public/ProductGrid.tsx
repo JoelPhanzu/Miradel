@@ -16,7 +16,7 @@ async function PricedGrid({ products, hideSeller }: { products: Product[]; hideS
   ])
   const now = new Date()
   return (
-    <ul className="grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-6 lg:grid-cols-4">
+    <ul className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
       {products.map((product) => {
         const price = productPrice(product, promotions, now)
         const { seller, whatsappUrl } = productSale(product, entrepreneurs, settings, price)

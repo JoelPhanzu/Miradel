@@ -6,6 +6,7 @@ import { SectionHeading } from '@/components/public/cards'
 import { EntrepreneurCard } from '@/components/public/EntrepreneurCard'
 import { PageHeader } from '@/components/public/PageHeader'
 import { ProductSearch } from '@/components/public/ProductSearch'
+import { IMAGES } from '@/content/images'
 import {
   getPageSections,
   getProductCategories,
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     'Les produits de la Fondation MIRADEL FEVEPA et des entrepreneurs qu’elle accompagne en RDC, classés par secteur d’activité.',
 }
 
-const container = 'mx-auto max-w-[1320px] px-4 md:px-8'
+const container = 'mx-auto max-w-7xl px-4 sm:px-6'
 
 export default async function VitrinePage() {
   const [sections, entrepreneurs, sectors, products, categories] = await Promise.all([
@@ -55,13 +56,18 @@ export default async function VitrinePage() {
 
   return (
     <>
-      <PageHeader title={intro?.title ?? 'Vitrine de l’entrepreneur'} intro={intro?.body}>
-        <div className="rise mt-10" style={{ '--i': 2 } as React.CSSProperties}>
+      <PageHeader
+        title={intro?.title ?? 'Vitrine de l’entrepreneur'}
+        intro={intro?.body}
+        imageUrl={intro?.imageUrl}
+        image={IMAGES.pages.vitrine}
+      >
+        <div>
           <ProductSearch categories={usedCategories} sectors={sectors} />
         </div>
       </PageHeader>
 
-      <section className={`${container} pb-16 md:pb-24`}>
+      <section className={`${container} py-14 md:py-20`}>
         <SectionHeading
           title={people?.title ?? 'Les entrepreneurs que nous accompagnons'}
           intro={people?.body}
@@ -69,16 +75,18 @@ export default async function VitrinePage() {
         {groups.length > 1 && (
           <nav
             aria-label="Secteurs d’activité"
-            className="-mx-4 mt-8 flex gap-2 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0"
+            className="mt-8 flex flex-wrap justify-center gap-2"
           >
             {groups.map((g) => (
               <a
                 key={g.id}
                 href={`#secteur-${g.id}`}
-                className="border-line hover:border-ink inline-flex min-h-11 shrink-0 items-center rounded-full border px-5 text-sm font-semibold"
+                className="border-border text-navy-900 inline-flex min-h-11 items-center rounded-full border bg-white px-5 text-sm font-semibold transition-colors hover:border-orange-500 hover:text-orange-700"
               >
                 {g.name}
-                <span className="text-ink-soft ml-2 font-normal">{g.items.length}</span>
+                <span className="ml-2 rounded-full bg-green-50 px-2 text-xs font-bold text-green-700">
+                  {g.items.length}
+                </span>
               </a>
             ))}
           </nav>
@@ -86,7 +94,10 @@ export default async function VitrinePage() {
         <div className="mt-10 grid gap-16">
           {groups.map((g) => (
             <section key={g.id} id={`secteur-${g.id}`} className="scroll-mt-28">
-              <h3 className="font-display text-2xl font-bold md:text-3xl">{g.name}</h3>
+              <h3 className="font-display text-heading flex items-center gap-3 text-xl font-extrabold md:text-2xl">
+                <span className="h-0.5 w-8 shrink-0 bg-orange-500" aria-hidden />
+                {g.name}
+              </h3>
               {g.description && <p className="text-ink-soft mt-2 max-w-[60ch]">{g.description}</p>}
               <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {g.items.map((e) => (
@@ -104,8 +115,8 @@ export default async function VitrinePage() {
         </div>
       </section>
 
-      <section className="bg-cream-deep">
-        <div className={`${container} py-16 md:py-24`}>
+      <section className="bg-gray-50">
+        <div className={`${container} py-14 md:py-20`}>
           <SectionHeading
             title={catalog?.title ?? 'Tous les produits'}
             intro={catalog?.body}
@@ -118,7 +129,7 @@ export default async function VitrinePage() {
                 <li key={c.id}>
                   <Link
                     href={`/vitrine/produits?categorie=${c.slug}`}
-                    className="bg-cream border-line hover:border-ink flex min-h-16 items-center justify-between gap-3 rounded-2xl border px-5 font-semibold transition"
+                    className="border-border text-navy-900 flex min-h-16 items-center justify-between gap-3 rounded-xl border bg-white px-5 font-bold shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   >
                     {c.name}
                     <span className="text-ink-soft inline-flex items-center gap-1 text-sm font-normal">
@@ -130,9 +141,9 @@ export default async function VitrinePage() {
               ))}
             </ul>
           )}
-          <ButtonLink href="/vitrine/produits" className="mt-10">
-            Parcourir le catalogue
-          </ButtonLink>
+          <div className="mt-10 flex justify-center">
+            <ButtonLink href="/vitrine/produits">Parcourir le catalogue</ButtonLink>
+          </div>
         </div>
       </section>
     </>

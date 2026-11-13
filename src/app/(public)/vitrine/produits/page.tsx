@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import { PageHeader } from '@/components/public/PageHeader'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { ProductSearch } from '@/components/public/ProductSearch'
+import { IMAGES } from '@/content/images'
 import {
   getPageSections,
   getProductCategories,
@@ -41,18 +42,17 @@ async function Results({ searchParams }: Pick<PageProps<'/vitrine/produits'>, 's
   const filtered = Boolean(filters.q || filters.categorie || filters.secteur)
 
   const pill = (selected: boolean) =>
-    `inline-flex min-h-11 shrink-0 items-center rounded-full border px-5 text-sm font-semibold transition ${
-      selected ? 'bg-ink text-cream border-ink' : 'border-line hover:border-ink'
+    `inline-flex min-h-11 items-center rounded-full border px-5 text-sm font-semibold transition ${
+      selected
+        ? 'border-orange-500 bg-orange-500 text-navy-950'
+        : 'border-border bg-white text-navy-900 hover:border-orange-500 hover:text-orange-700'
     }`
 
   return (
     <>
       <ProductSearch categories={usedCategories} sectors={sectors} defaults={filters} />
       {usedCategories.length > 1 && (
-        <nav
-          aria-label="Catégories"
-          className="-mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0"
-        >
+        <nav aria-label="Catégories" className="mt-6 flex flex-wrap gap-2">
           <Link href="/vitrine/produits" className={pill(!filters.categorie)}>
             Tout
           </Link>
@@ -97,15 +97,21 @@ export default async function ProductsPage({ searchParams }: PageProps<'/vitrine
   const { vitrine_products_intro: intro } = await getPageSections()
   return (
     <>
-      <PageHeader title={intro?.title ?? 'Tous les produits'} intro={intro?.body}>
+      <PageHeader
+        title={intro?.title ?? 'Tous les produits'}
+        intro={intro?.body}
+        imageUrl={intro?.imageUrl}
+        image={IMAGES.pages.produits}
+        crumbs={[{ href: '/vitrine', label: 'Vitrine de l’entrepreneur' }]}
+      >
         <Link
           href="/vitrine"
-          className="text-accent mt-4 inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4"
+          className="inline-flex min-h-11 items-center text-sm font-bold text-orange-700 underline underline-offset-4"
         >
           Voir les entrepreneurs par secteur
         </Link>
       </PageHeader>
-      <div className="mx-auto max-w-[1320px] px-4 pb-24 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-14 sm:px-6 md:pb-20">
         <Suspense fallback={<div className="bg-cream-deep h-96 animate-pulse rounded-3xl" />}>
           <Results searchParams={searchParams} />
         </Suspense>

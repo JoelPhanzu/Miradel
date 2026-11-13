@@ -1,18 +1,18 @@
 import type { Metadata, Viewport } from 'next'
-import { Manrope, Montserrat } from 'next/font/google'
+import { Inter, Montserrat } from 'next/font/google'
 import './globals.css'
 
 // Deux familles maximum, sous-ensemble latin, auto-hébergées par next/font.
-// Titres : Montserrat (franche, comme le site de référence) ; texte : Manrope (très lisible).
+// Titres : Montserrat (600/700/800) ; texte courant : Inter.
 const montserrat = Montserrat({
   variable: '--font-montserrat',
   subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
+  weight: ['600', '700', '800'],
   display: 'swap',
 })
 
-const manrope = Manrope({
-  variable: '--font-manrope',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
   display: 'swap',
 })
@@ -28,16 +28,17 @@ export const metadata: Metadata = {
   openGraph: { locale: 'fr_FR', type: 'website', siteName: 'Fondation MIRADEL FEVEPA' },
 }
 
+// Thème clair uniquement ; le zoom reste autorisé (pas de maximumScale).
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#012060' },
-    { media: '(prefers-color-scheme: dark)', color: '#050d1f' },
-  ],
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#012060',
+  colorScheme: 'light',
 }
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="fr" className={`${montserrat.variable} ${manrope.variable} antialiased`}>
+    <html lang="fr" className={`${montserrat.variable} ${inter.variable} antialiased`}>
       <body className="min-h-dvh font-sans text-base leading-relaxed">{children}</body>
     </html>
   )

@@ -1,57 +1,102 @@
 @import 'tailwindcss';
 
 /*
- * Charte MIRADEL — version « lumineuse, bleu dominant » demandée par la fondation (13/11/2026),
- * inspirée du site de référence mat-durest : bleu marine profond, accent orangé, fond blanc.
+ * Charte MIRADEL — reprise de la charte « corporate » de Lean Market (13/11/2026) :
+ * bleu marine dominant, orange en accent principal, vert émeraude à petite dose (détails
+ * « positifs » : coches, badges, succès). Thème clair uniquement.
  * Toutes les couleurs sont définies ici, une seule fois : changer de charte = modifier ce bloc.
- * Contrastes AA vérifiés : ink / cream, accent / cream, accent-ink / accent, ochre / cream,
- * blanc / navy.
  */
 :root {
-  --cream: #ffffff;
-  --cream-deep: #eef3fb;
-  --ink: #0b1f44;
-  --ink-soft: #4a5872;
-  --line: #d6dfee;
-  --accent: #0d47a1;
-  --accent-ink: #ffffff;
-  --accent-soft: #e5eefc;
-  --ochre: #b8460f;
-  --ochre-soft: #fdeadf;
-  --navy: #012060;
-  --orange: #f07a3a;
-  --photo-a: #9db7e0;
-  --photo-b: #1d3f7a;
-  --whatsapp: #1f7a4d;
-}
+  /* Bleu marine */
+  --navy-950: #00133b;
+  --navy-900: #012060;
+  --navy-800: #0a2b6d;
+  --navy-700: #1a3f86;
+  --navy-600: #2d559e;
+  --navy-100: #e2e8f3;
 
-/* Sombre : automatique selon le téléphone, sauf si la page force un thème. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --cream: #0a1428;
-    --cream-deep: #111f3a;
-    --ink: #e9eef8;
-    --ink-soft: #b2bfd6;
-    --line: #233457;
-    --accent: #8db4ff;
-    --accent-ink: #08183a;
-    --accent-soft: #16294d;
-    --ochre: #ff9f66;
-    --ochre-soft: #3a2416;
-    --navy: #050d1f;
-    --orange: #ff9f66;
-    --photo-a: #23406f;
-    --photo-b: #0e1d3a;
-    --whatsapp: #5fcf94;
-  }
+  /* Orange (accent principal) */
+  --orange-300: #f6b49a;
+  --orange-400: #f2774a;
+  --orange-500: #e8521d;
+  --orange-600: #d14716;
+  --orange-700: #b23b10;
+
+  /* Vert émeraude (accent secondaire, à petite dose) */
+  --green-50: #e8f6ee;
+  --green-400: #3fbf7f;
+  --green-500: #1a9b5c;
+  --green-600: #15804c;
+  --green-700: #106a3e;
+
+  /* Neutres */
+  --white: #ffffff;
+  --gray-50: #f7f7f7;
+  --gray-100: #eeeff2;
+  --border: #e2e5eb;
+  --ink-900: #0f1b33;
+  --ink-700: #2c3a52;
+  --ink-500: #566279;
+  --ink-400: #7b8597;
+
+  /* WhatsApp : uniquement pour les boutons WhatsApp. */
+  --whatsapp-green: #25d366;
+
+  /*
+   * Rôles sémantiques. Les anciens noms (cream, ink, accent…) restent utilisés par l'admin et
+   * par les formulaires : ils pointent désormais vers la nouvelle charte.
+   */
+  --cream: var(--white);
+  --cream-deep: var(--gray-50);
+  --ink: var(--ink-900);
+  --ink-soft: var(--ink-500);
+  --line: var(--border);
+  --heading: var(--navy-800);
+  --accent: var(--navy-800);
+  --accent-ink: var(--white);
+  --accent-soft: var(--navy-100);
+  --ochre: var(--orange-700);
+  --ochre-soft: color-mix(in oklab, var(--orange-300) 30%, var(--white));
+  --navy: var(--navy-900);
+  --orange: var(--orange-500);
+  --photo-a: var(--navy-600);
+  --photo-b: var(--navy-900);
+  --whatsapp: var(--whatsapp-green);
+
+  color-scheme: light;
 }
 
 @theme inline {
+  --color-navy-950: var(--navy-950);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-navy-700: var(--navy-700);
+  --color-navy-600: var(--navy-600);
+  --color-navy-100: var(--navy-100);
+  --color-orange-300: var(--orange-300);
+  --color-orange-400: var(--orange-400);
+  --color-orange-500: var(--orange-500);
+  --color-orange-600: var(--orange-600);
+  --color-orange-700: var(--orange-700);
+  --color-green-50: var(--green-50);
+  --color-green-400: var(--green-400);
+  --color-green-500: var(--green-500);
+  --color-green-600: var(--green-600);
+  --color-green-700: var(--green-700);
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-border: var(--border);
+  --color-ink-900: var(--ink-900);
+  --color-ink-700: var(--ink-700);
+  --color-ink-500: var(--ink-500);
+  --color-ink-400: var(--ink-400);
+
   --color-cream: var(--cream);
   --color-cream-deep: var(--cream-deep);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-line: var(--line);
+  --color-heading: var(--heading);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
@@ -60,56 +105,76 @@
   --color-whatsapp: var(--whatsapp);
   --color-navy: var(--navy);
   --color-orange: var(--orange);
-  --font-sans: var(--font-manrope);
+
+  --font-sans: var(--font-inter);
   --font-display: var(--font-montserrat);
-  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
   -webkit-text-size-adjust: 100%;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
-  background: var(--cream);
+  background: var(--white);
   color: var(--ink);
+  /* Filet de sécurité seulement : chaque débordement réel est corrigé à la source. */
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 /*
- * Surface bleu marine (bandeau, mission, pied de page) : les couleurs sont redéfinies
- * localement, si bien que tous les composants placés dedans restent lisibles.
+ * Surface bleu marine (bandeaux, pied de page) : les couleurs sont redéfinies localement,
+ * si bien que tous les composants placés dedans restent lisibles.
  */
 .on-navy {
-  --cream: var(--navy);
-  --cream-deep: color-mix(in oklab, var(--navy) 82%, white 18%);
-  --ink: #ffffff;
-  --ink-soft: #c9d5ec;
-  --line: rgb(255 255 255 / 0.2);
-  --accent: #ffffff;
-  --accent-ink: #012060;
+  --cream: var(--navy-900);
+  --cream-deep: var(--navy-800);
+  --ink: var(--white);
+  --ink-soft: rgb(255 255 255 / 0.8);
+  --line: rgb(255 255 255 / 0.15);
+  --heading: var(--white);
+  --accent: var(--white);
+  --accent-ink: var(--navy-900);
   --accent-soft: rgb(255 255 255 / 0.1);
-  --ochre: var(--orange);
-  background: var(--navy);
-  color: #ffffff;
+  --ochre: var(--orange-400);
+  background: var(--navy-900);
+  color: var(--white);
+}
+
+.on-navy-800 {
+  background: var(--navy-800);
 }
 
 /* Mention [À COMPLÉTER] lisible aussi sur fond bleu marine. */
 .on-navy .to-complete {
-  background: #fdeadf;
-  color: #8a3208;
+  background: var(--white);
+  color: var(--orange-700);
 }
 
-/* Titres : Montserrat, plus serrée et plus franche que le texte courant. */
 .font-display {
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--orange-500);
+  color: var(--navy-950);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 3px solid var(--orange-500);
   outline-offset: 3px;
 }
 
@@ -120,50 +185,28 @@ body {
   font-weight: 600;
 }
 
-/* Bandeau d'accueil tant que les photos ne sont pas fournies : dégradé bleu, sans fausse image. */
-.hero-empty {
-  background:
-    radial-gradient(
-      70% 90% at 85% 30%,
-      color-mix(in oklab, var(--photo-a) 70%, transparent),
-      transparent 70%
-    ),
-    linear-gradient(135deg, var(--navy), var(--photo-b));
-}
-
 /* Emplacement photo : reste digne tant que la vraie photo n'est pas fournie. */
 .photo-slot {
   background:
     radial-gradient(
       120% 90% at 20% 10%,
-      color-mix(in oklab, var(--photo-a) 85%, white 15%),
+      color-mix(in oklab, var(--photo-a) 70%, var(--white) 30%),
       transparent 60%
     ),
     linear-gradient(160deg, var(--photo-a), var(--photo-b));
 }
 
-/*
- * Apparition au chargement (héro) et au défilement (sections), en CSS pur.
- * Sans prise en charge de animation-timeline, le contenu s'affiche simplement.
- */
+/* Apparition du bandeau d'accueil au chargement (mouvement vertical uniquement). */
 @media (prefers-reduced-motion: no-preference) {
   .rise {
-    animation: rise 0.9s var(--ease-out-soft) both;
+    animation: rise 0.55s var(--ease-out-soft) both;
     animation-delay: calc(var(--i, 0) * 90ms);
-  }
-
-  @supports (animation-timeline: view()) {
-    [data-reveal] {
-      animation: rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 55%;
-    }
   }
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(24px);
   }
 }

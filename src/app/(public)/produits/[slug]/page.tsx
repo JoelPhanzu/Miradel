@@ -4,9 +4,10 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { connection } from 'next/server'
 import { Suspense } from 'react'
-import { ArrowLeft, WhatsappLogo } from '@phosphor-icons/react/ssr'
+import { WhatsappLogo } from '@phosphor-icons/react/ssr'
 import { ButtonLink } from '@/components/public/ButtonLink'
 import { AddToCart } from '@/components/public/cart/AddToCart'
+import { Breadcrumbs } from '@/components/public/PageHeader'
 import { PhotoSlot } from '@/components/public/PhotoSlot'
 import { PriceTag } from '@/components/public/PriceTag'
 import { OrToComplete, RichText } from '@/components/public/ToComplete'
@@ -163,29 +164,31 @@ async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>
   const [cover, ...others] = product.images
 
   return (
-    <article className="mx-auto max-w-[1320px] px-4 pt-8 pb-24 md:px-8">
-      <Link
-        href={seller ? `/vitrine/${seller.slug}` : '/vitrine/produits'}
-        className="text-ink-soft hover:text-ink inline-flex min-h-11 items-center gap-2 text-sm"
-      >
-        <ArrowLeft size={16} aria-hidden />
-        {seller ? `Vitrine : ${seller.name}` : 'Tous les produits'}
-      </Link>
+    <article className="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-14">
+      <Breadcrumbs
+        items={[
+          { href: '/vitrine', label: 'Vitrine de l’entrepreneur' },
+          seller
+            ? { href: `/vitrine/${seller.slug}`, label: seller.name }
+            : { href: '/vitrine/produits', label: 'Tous les produits' },
+          { label: product.name },
+        ]}
+      />
 
-      <div className="mt-6 grid gap-10 md:grid-cols-2 md:gap-16">
-        <div className="space-y-3">
+      <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
+        <div className="min-w-0 space-y-3">
           <PhotoSlot
             src={cover}
             alt={product.name}
             brief={`photo nette du produit ${product.name} sur fond neutre`}
-            className="aspect-[4/5]"
+            className="aspect-[4/5] rounded-xl"
             sizes="(min-width: 768px) 50vw, 100vw"
             priority
           />
           {others.length > 0 && (
             <ul className="grid grid-cols-3 gap-3">
               {others.map((src) => (
-                <li key={src} className="relative aspect-square overflow-hidden">
+                <li key={src} className="relative aspect-square overflow-hidden rounded-lg">
                   <Image src={src} alt={product.name} fill sizes="16vw" className="object-cover" />
                 </li>
               ))}
@@ -193,15 +196,16 @@ async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>
           )}
         </div>
 
-        <div className="md:pt-8">
-          <h1 className="rise font-display text-5xl leading-none font-bold tracking-tight md:text-6xl">
+        <div className="min-w-0 md:pt-4">
+          <span className="block h-1 w-16 rounded-full bg-orange-500" aria-hidden />
+          <h1 className="rise font-display text-heading mt-4 text-3xl leading-tight font-extrabold break-words md:text-5xl">
             {product.name}
           </h1>
           <p className="text-ink-soft mt-3">
             Contenance : <OrToComplete value={product.packaging} />
           </p>
           <div className="mt-6">
-            <Suspense fallback={<div className="bg-cream-deep h-40 animate-pulse" />}>
+            <Suspense fallback={<div className="h-40 animate-pulse rounded-xl bg-gray-50" />}>
               <Purchase slug={slug} />
             </Suspense>
           </div>
@@ -210,14 +214,14 @@ async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>
             <RichText text={product.description} />
           </div>
 
-          <dl className="divide-line border-line mt-10 divide-y border-y">
+          <dl className="divide-border border-border mt-10 divide-y border-y">
             {seller && (
               <div className="py-4">
                 <dt className="text-sm font-semibold">Vendu par</dt>
                 <dd className="mt-1">
                   <Link
                     href={`/vitrine/${seller.slug}`}
-                    className="text-accent underline underline-offset-4"
+                    className="font-semibold text-orange-700 underline underline-offset-4"
                   >
                     {seller.name}
                   </Link>
@@ -243,7 +247,7 @@ async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>
                 <dd className="mt-1">
                   <Link
                     href={`/nos-programmes/${program.slug}`}
-                    className="text-accent underline underline-offset-4"
+                    className="font-semibold text-orange-700 underline underline-offset-4"
                   >
                     {program.title}
                   </Link>
@@ -266,7 +270,7 @@ async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>
 
 export default function ProductPage({ params }: PageProps<'/produits/[slug]'>) {
   return (
-    <Suspense fallback={<div className="mx-auto h-[70vh] max-w-[1320px]" />}>
+    <Suspense fallback={<div className="mx-auto h-[70vh] max-w-7xl" />}>
       <ProductPageContent params={params} />
     </Suspense>
   )

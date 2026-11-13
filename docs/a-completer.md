@@ -112,3 +112,27 @@ Aucun de ces contenus n'a été inventé ; le site les affiche dès leur saisie.
   placer dans `migration/source/` : le script d'import sera écrit à leur réception.
 - Liste complète des anciennes URL pour compléter les redirections 301 (`next.config.ts`).
 - Accès au registraire de `miradel.org` et relevé des DNS existants (dont MX) : voir `docs/bascule.md`.
+
+## 10. Photos d'illustration provisoires (refonte visuelle du 13/11/2026)
+
+CLAUDE.md §9 exige des **photos réelles** de la fondation. En attendant, des photos Unsplash
+(licence gratuite) servent de remplissage, centralisées dans `src/content/images.ts`. Chacune
+porte la mention « Photo d'illustration » à l'écran et **disparaît dès qu'une vraie photo est
+saisie dans l'admin**. Choix à faire valider par Lean Market, puis à remplacer :
+
+| Emplacement | Sujet de la photo provisoire | Remarque |
+|---|---|---|
+| Accueil (bandeau), La Fondation | Deux femmes en wax dans un atelier de couture | |
+| Accueil (mission), Notre impact | Élèves lisant en classe | |
+| Bandeau « S'engager » (bas de page), programmes non classés | Mains d'une femme laissant couler du riz | |
+| Programme Agriculture, page Nos programmes | Cultivatrices plantant du manioc | photo prise en Sierra Leone |
+| Programme Santé | Jeune soignante en blouse blanche | logo d'un établissement visible sur la blouse |
+| Programme Éducation, Actualités | Enseignant au tableau, vu du fond de la classe | |
+| Programme Environnement | Mains plantant une jeune pousse | |
+| Transparence, pages juridiques | Pile de documents | |
+| Vitrine, Promotions | Vendeuse triant des piments séchés au marché | lieu probablement hors d'Afrique |
+| Fiches produits (en-tête) | Savons artisanaux | |
+| Panier | Étal de fruits | |
+| Contact | Kinshasa vue depuis le fleuve Congo | |
+| S'engager | Mains superposées | personnes non africaines |
+| Faire un don | Mains formant un cœur peint | |

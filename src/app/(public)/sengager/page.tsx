@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowRight, HandHeart } from '@phosphor-icons/react/ssr'
+import { Kicker } from '@/components/public/cards'
+import { HandHeart } from '@phosphor-icons/react/ssr'
 import { MessageForm } from '@/components/public/form/MessageForm'
 import { DONATE_HREF } from '@/components/public/nav'
 import { PageHeader } from '@/components/public/PageHeader'
 import { RichText } from '@/components/public/ToComplete'
+import { ButtonLink } from '@/components/public/ButtonLink'
+import { IMAGES } from '@/content/images'
 import { getPageSections } from '@/lib/data/public'
 
 export const metadata: Metadata = {
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
     'Faire un don, devenir bénévole ou partenaire de la Fondation MIRADEL FEVEPA pour les femmes et les jeunes vulnérables en RDC.',
 }
 
-const container = 'mx-auto max-w-[1320px] px-4 md:px-8'
+const container = 'mx-auto max-w-7xl px-4 sm:px-6'
 
 export default async function EngagePage() {
   const sections = await getPageSections()
@@ -24,36 +26,39 @@ export default async function EngagePage() {
 
   return (
     <>
-      <PageHeader title={intro?.title ?? 'S’engager'} intro={intro?.body} />
+      <PageHeader
+        title={intro?.title ?? 'S’engager'}
+        intro={intro?.body}
+        imageUrl={intro?.imageUrl}
+        image={IMAGES.pages.sengager}
+      />
 
-      <section className="bg-accent text-accent-ink">
+      <section className="on-navy on-navy-800">
         <div className={`${container} flex flex-wrap items-center justify-between gap-8 py-14`}>
           <div>
-            <h2 className="font-display text-4xl font-bold md:text-5xl">
+            <Kicker className="mb-3" />
+            <h2 className="font-display text-heading text-2xl font-extrabold md:text-4xl">
               {donate?.title ?? 'Faire un don'}
             </h2>
-            <p className="mt-3 max-w-[52ch] opacity-90">
+            <p className="mt-3 max-w-[52ch] text-white/90">
               Par mobile money ou virement, puis une déclaration en ligne pour que l’équipe confirme
               la réception.
             </p>
           </div>
-          <Link
-            href={DONATE_HREF}
-            className="bg-cream text-ink inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold transition active:scale-[0.98]"
-          >
-            <HandHeart size={18} aria-hidden />
+          <ButtonLink href={DONATE_HREF}>
+            <HandHeart size={18} weight="fill" aria-hidden />
             Faire un don
-            <ArrowRight size={16} aria-hidden />
-          </Link>
+          </ButtonLink>
         </div>
       </section>
 
       <section
         id="benevolat"
-        className={`${container} grid scroll-mt-24 gap-10 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-20 md:py-24`}
+        className={`${container} grid scroll-mt-24 gap-10 py-14 md:grid-cols-[0.9fr_1.1fr] md:gap-16 md:py-20`}
       >
         <div data-reveal>
-          <h2 className="font-display text-4xl font-bold md:text-5xl">
+          <Kicker className="mb-3" />
+          <h2 className="font-display text-heading text-2xl font-extrabold md:text-4xl">
             {volunteer?.title ?? 'Devenir bénévole'}
           </h2>
           <div className="mt-6">
@@ -63,12 +68,13 @@ export default async function EngagePage() {
         <MessageForm kind="benevolat" />
       </section>
 
-      <section id="partenariat" className="bg-cream-deep scroll-mt-24">
+      <section id="partenariat" className="scroll-mt-24 bg-gray-50">
         <div
-          className={`${container} grid gap-10 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-20 md:py-24`}
+          className={`${container} grid gap-10 py-14 md:grid-cols-[0.9fr_1.1fr] md:gap-16 md:py-20`}
         >
           <div data-reveal>
-            <h2 className="font-display text-4xl font-bold md:text-5xl">
+            <Kicker className="mb-3" />
+            <h2 className="font-display text-heading text-2xl font-extrabold md:text-4xl">
               {partnership?.title ?? 'Devenir partenaire'}
             </h2>
             <div className="mt-6">

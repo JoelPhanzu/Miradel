@@ -11,7 +11,14 @@ const INTERVAL_MS = 6000
  * chaque suivante est préparée (cachée) un cycle avant de s'afficher. Pas d'animation si le
  * téléphone demande de réduire les mouvements.
  */
-export function HeroSlideshow({ images }: { images: string[] }) {
+export function HeroSlideshow({
+  images,
+  position = 'object-center md:object-right',
+}: {
+  images: string[]
+  /** Cadrage : centré sur mobile, calé à droite sur ordinateur (le texte est à gauche). */
+  position?: string
+}) {
   const [index, setIndex] = useState(0)
   const [mounted, setMounted] = useState(1)
 
@@ -42,8 +49,8 @@ export function HeroSlideshow({ images }: { images: string[] }) {
           alt=""
           fill
           sizes="100vw"
-          priority={i === 0}
-          className={`object-cover object-center transition-opacity duration-[1500ms] md:object-right ${
+          preload={i === 0}
+          className={`object-cover transition-opacity duration-[1500ms] ${position} ${
             i === index ? 'opacity-100' : 'opacity-0'
           }`}
         />

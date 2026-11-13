@@ -14,7 +14,7 @@ export function CartLink() {
     >
       <ShoppingBag size={20} aria-hidden />
       {count > 0 && (
-        <span className="bg-accent text-accent-ink absolute -top-1 -right-1 flex min-w-5 items-center justify-center rounded-full px-1 text-[0.68rem] leading-5 font-semibold">
+        <span className="text-navy-950 absolute -top-1 -right-1 flex min-w-5 items-center justify-center rounded-full bg-orange-500 px-1 text-[0.68rem] leading-5 font-semibold">
           {count}
         </span>
       )}

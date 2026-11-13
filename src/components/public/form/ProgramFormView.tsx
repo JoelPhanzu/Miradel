@@ -59,7 +59,7 @@ export function ProgramFormView({
 
   if (done) {
     return (
-      <p role="status" className="bg-accent-soft rounded-2xl p-6 text-lg font-semibold">
+      <p role="status" className="rounded-2xl bg-green-50 p-6 text-lg font-semibold text-green-700">
         {successMessage ||
           'Merci, votre participation a bien été enregistrée. L’équipe vous recontacte.'}
       </p>
@@ -68,7 +68,7 @@ export function ProgramFormView({
 
   const errorText = (fieldId: string) =>
     errors[fieldId] && (
-      <p id={`${id(fieldId)}-error`} role="alert" className="text-accent text-sm font-semibold">
+      <p id={`${id(fieldId)}-error`} role="alert" className="text-ochre text-sm font-semibold">
         {errors[fieldId]}
       </p>
     )
@@ -173,7 +173,7 @@ export function ProgramFormView({
         </Link>
       </p>
       {(errors.form || Object.keys(errors).length > 0) && (
-        <p role="alert" className="text-accent font-semibold">
+        <p role="alert" className="text-ochre font-semibold">
           {errors.form ?? 'Vérifiez les champs signalés.'}
         </p>
       )}
@@ -181,7 +181,7 @@ export function ProgramFormView({
         <button
           type="submit"
           disabled={pending}
-          className="bg-accent text-accent-ink hover:bg-ink hover:text-cream inline-flex min-h-12 items-center rounded-full px-8 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-60"
+          className="text-navy-950 inline-flex min-h-12 items-center rounded-full bg-orange-500 px-8 text-sm font-bold font-semibold transition hover:bg-orange-400 active:scale-[0.98] disabled:opacity-60"
         >
           {pending ? 'Envoi…' : 'Envoyer ma participation'}
         </button>

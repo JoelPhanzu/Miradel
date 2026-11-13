@@ -13,7 +13,7 @@ export async function TodayBanner() {
   return (
     <Link
       href="/promotions"
-      className="bg-accent text-accent-ink block px-4 py-2.5 text-center text-sm font-semibold hover:underline"
+      className="text-navy-950 block bg-orange-500 px-4 py-2.5 text-center text-sm font-bold hover:underline"
     >
       Aujourd&apos;hui : {promotion.title}
       {promotion.subtitle ? ` - ${promotion.subtitle}` : ''}

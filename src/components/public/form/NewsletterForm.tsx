@@ -41,7 +41,7 @@ export function NewsletterForm() {
 
   if (state === 'done') {
     return (
-      <p role="status" className="font-semibold">
+      <p role="status" className="font-semibold text-green-400">
         Merci ! Vous recevrez nos nouvelles.
       </p>
     )
@@ -53,7 +53,7 @@ export function NewsletterForm() {
       <label htmlFor="newsletter-email" className="text-sm font-semibold">
         Recevoir nos nouvelles
       </label>
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex flex-col gap-2 sm:flex-row lg:flex-col">
         <input
           id="newsletter-email"
           name="email"
@@ -66,7 +66,7 @@ export function NewsletterForm() {
         <button
           type="submit"
           disabled={state === 'pending'}
-          className="bg-ink text-cream min-h-12 shrink-0 rounded-full px-6 text-sm font-semibold disabled:opacity-60"
+          className="text-navy-950 min-h-12 shrink-0 rounded-full bg-orange-500 px-6 text-sm font-bold transition hover:bg-orange-400 disabled:opacity-60"
         >
           {state === 'pending' ? 'Envoi…' : 'S’inscrire'}
         </button>
@@ -82,7 +82,7 @@ export function NewsletterForm() {
         </span>
       </label>
       {error && (
-        <p role="alert" className="text-accent text-sm font-semibold">
+        <p role="alert" className="text-ochre text-sm font-semibold">
           {error}
         </p>
       )}

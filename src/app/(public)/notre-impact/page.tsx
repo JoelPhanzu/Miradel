@@ -3,6 +3,7 @@ import { ButtonLink } from '@/components/public/ButtonLink'
 import { MetricsGrid, SectionHeading, TestimonialList } from '@/components/public/cards'
 import { PageHeader } from '@/components/public/PageHeader'
 import { ToCompleteMark } from '@/components/public/ToComplete'
+import { IMAGES } from '@/content/images'
 import { getImpactMetrics, getPageSections, getTestimonials } from '@/lib/data/public'
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     'Les résultats de la Fondation MIRADEL FEVEPA : chiffres clés justifiés et témoignages de bénéficiaires.',
 }
 
-const container = 'mx-auto max-w-[1320px] px-4 md:px-8'
+const container = 'mx-auto max-w-7xl px-4 sm:px-6'
 
 export default async function ImpactPage() {
   const [{ impact_intro: intro }, metrics, testimonials] = await Promise.all([
@@ -22,9 +23,14 @@ export default async function ImpactPage() {
 
   return (
     <>
-      <PageHeader title={intro?.title ?? 'Notre impact'} intro={intro?.body} />
+      <PageHeader
+        title={intro?.title ?? 'Notre impact'}
+        intro={intro?.body}
+        imageUrl={intro?.imageUrl}
+        image={IMAGES.pages.impact}
+      />
 
-      <section className={`${container} pb-16 md:pb-24`}>
+      <section className={`${container} py-14 md:py-20`}>
         {metrics.length > 0 ? (
           <MetricsGrid metrics={metrics} />
         ) : (
@@ -35,8 +41,8 @@ export default async function ImpactPage() {
       </section>
 
       {testimonials.length > 0 && (
-        <section className="bg-cream-deep">
-          <div className={`${container} py-16 md:py-24`}>
+        <section className="bg-gray-50">
+          <div className={`${container} py-14 md:py-20`}>
             <SectionHeading title="Ils témoignent" />
             <div className="mt-10">
               <TestimonialList testimonials={testimonials} />
@@ -45,12 +51,16 @@ export default async function ImpactPage() {
         </section>
       )}
 
-      <section className={`${container} flex flex-wrap items-center justify-between gap-6 py-16`}>
-        <p className="font-display max-w-[30ch] text-3xl font-bold">
+      <section
+        className={`${container} flex flex-wrap items-center justify-between gap-6 py-14 md:py-20`}
+      >
+        <p className="font-display text-heading max-w-[30ch] text-2xl font-extrabold md:text-3xl">
           Les actions de terrain, datées et illustrées.
         </p>
         <div className="flex flex-wrap gap-3">
-          <ButtonLink href="/actualites">Voir les actualités</ButtonLink>
+          <ButtonLink href="/actualites" variant="secondary">
+            Voir les actualités
+          </ButtonLink>
           <ButtonLink href="/transparence" variant="outline">
             Rapports et documents
           </ButtonLink>

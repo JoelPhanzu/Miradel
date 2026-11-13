@@ -20,7 +20,7 @@ export function ProductSearch({
       action="/vitrine/produits"
       method="get"
       role="search"
-      className="bg-cream border-line grid gap-3 rounded-3xl border p-3 shadow-sm md:grid-cols-[1.6fr_1fr_1fr_auto] md:p-4"
+      className="bg-cream border-border grid gap-3 rounded-xl border p-3 shadow-sm md:grid-cols-[1.6fr_1fr_1fr_auto] md:p-4"
     >
       <label className="relative">
         <span className="sr-only">Rechercher un produit</span>
@@ -65,7 +65,7 @@ export function ProductSearch({
       )}
       <button
         type="submit"
-        className="bg-accent text-accent-ink hover:bg-ink hover:text-cream min-h-12 rounded-full px-8 text-sm font-semibold transition"
+        className="text-navy-950 min-h-12 rounded-full bg-orange-500 px-8 text-sm font-bold transition hover:bg-orange-400"
       >
         Rechercher
       </button>
