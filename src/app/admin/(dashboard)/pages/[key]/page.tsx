@@ -18,6 +18,7 @@ import { saveSection } from '../actions'
 const LONG_TEXTS = [
   'home_mission',
   'foundation_intro',
+  'foundation_vision',
   'foundation_history',
   'foundation_governance',
   'donate_intro',

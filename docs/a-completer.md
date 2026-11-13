@@ -13,6 +13,7 @@ Chaque point se saisit ensuite **dans l'admin**, sans intervention technique.
 | Sigle officiel | Coordonnées et paiement > La fondation | manquant |
 | Adresse physique du siège | Coordonnées et paiement > La fondation | manquant |
 | Responsables (noms, fonctions, photos, accord de diffusion) | Équipe | aucun |
+| Vision de la fondation (texte de la fondation, jamais rédigé à sa place) | Textes et images > La Fondation > Vision | manquant |
 | Histoire de la fondation (date de création, fondatrice…) | Textes et images > La Fondation > Histoire | manquant |
 | Gouvernance (conseil, organes) | Textes et images > La Fondation > Gouvernance | manquant |
 | Logo officiel (fichier vectoriel ou PNG haute définition) | — (intégration par Lean Market) | manquant : logo texte provisoire |

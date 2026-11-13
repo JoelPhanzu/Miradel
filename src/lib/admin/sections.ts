@@ -59,6 +59,13 @@ export const PAGE_SECTIONS: {
     fields: ['title', 'body', 'imageUrl'],
   },
   {
+    key: 'foundation_vision',
+    label: 'Vision',
+    page: 'La Fondation',
+    fields: ['title', 'body'],
+    help: `Le texte de la vision tel que formulé par la fondation. Affiché sur l’accueil (sous la mission) et sur La Fondation. ${MARKDOWN_HELP}`,
+  },
+  {
     key: 'foundation_history',
     label: 'Histoire',
     page: 'La Fondation',

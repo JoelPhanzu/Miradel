@@ -19,6 +19,7 @@ import { DONATE_HREF } from '@/components/public/nav'
 import { IllustrationNote, PhotoSlot } from '@/components/public/PhotoSlot'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { ValuesSection } from '@/components/public/ValuesSection'
+import { RichText } from '@/components/public/ToComplete'
 import { IMAGES } from '@/content/images'
 import {
   getImpactMetrics,
@@ -74,6 +75,7 @@ export default async function HomePage() {
   ])
   const hero = sections.home_hero
   const mission = sections.home_mission
+  const vision = sections.foundation_vision
   const programsSection = sections.home_programs
   const impact = sections.home_impact
   const shop = sections.home_shop
@@ -323,6 +325,14 @@ export default async function HomePage() {
                     {mission.body}
                   </p>
                 )}
+                <div className="border-border mt-8 border-l-4 border-l-orange-500 pl-5">
+                  <h3 className="font-display text-heading text-xl font-extrabold md:text-2xl">
+                    {vision?.title ?? 'Notre vision'}
+                  </h3>
+                  <div className="text-ink-700 mt-3 text-lg leading-relaxed">
+                    <RichText text={vision?.body} />
+                  </div>
+                </div>
                 {mission.buttonHref && (
                   <ButtonLink href={mission.buttonHref} variant="secondary" className="mt-8">
                     {mission.buttonLabel ?? 'En savoir plus'}

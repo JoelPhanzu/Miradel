@@ -125,6 +125,7 @@ export const seedPageSections: {
     title: 'La Fondation',
     body: 'Autonomiser les femmes et les jeunes vulnérables en RDC par des actions concrètes et durables.',
   },
+  { key: 'foundation_vision', title: 'Notre vision', body: TO_COMPLETE },
   { key: 'foundation_history', title: 'Notre histoire', body: TO_COMPLETE },
   { key: 'foundation_governance', title: 'Gouvernance', body: TO_COMPLETE },
   { key: 'foundation_team', title: 'L’équipe' },

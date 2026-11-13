@@ -33,6 +33,8 @@ export default async function FoundationPage() {
   ])
   const intro = sections.foundation_intro
   const history = sections.foundation_history
+  const mission = sections.home_mission
+  const vision = sections.foundation_vision
   const governance = sections.foundation_governance
 
   return (
@@ -43,6 +45,27 @@ export default async function FoundationPage() {
         imageUrl={intro?.imageUrl}
         image={IMAGES.pages.fondation}
       />
+
+      {/* Mission et vision côte à côte */}
+      <section className={`${container} grid gap-6 pt-14 md:grid-cols-2 md:pt-20`}>
+        {[
+          { id: 'mission', title: mission?.title ?? 'Notre mission', text: mission?.body },
+          { id: 'vision', title: vision?.title ?? 'Notre vision', text: vision?.body },
+        ].map((block) => (
+          <div
+            key={block.id}
+            data-reveal
+            className="border-border min-w-0 rounded-xl border border-t-4 border-t-orange-500 bg-gray-50 p-6 md:p-8"
+          >
+            <h2 className="font-display text-heading text-2xl font-extrabold md:text-3xl">
+              {block.title}
+            </h2>
+            <div className="text-ink-700 mt-4 text-lg leading-relaxed">
+              <RichText text={block.text} />
+            </div>
+          </div>
+        ))}
+      </section>
 
       <section
         className={`${container} grid items-center gap-10 py-14 md:py-20 lg:grid-cols-2 lg:gap-16`}
