@@ -12,10 +12,7 @@ export const metadata: Metadata = { title: 'Documents' }
 
 export default async function DocumentsAdminPage() {
   await requireUser()
-  const rows = await getDb()
-    .select()
-    .from(schema.documents)
-    .orderBy(asc(schema.documents.position))
+  const rows = await getDb().select().from(schema.documents).orderBy(asc(schema.documents.position))
 
   return (
     <AdminPage

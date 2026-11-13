@@ -10,16 +10,21 @@ import {
   TestimonialList,
 } from '@/components/public/cards'
 import { Emphasis } from '@/components/public/Emphasis'
+import { EntrepreneurCard } from '@/components/public/EntrepreneurCard'
+import { HeroSlideshow } from '@/components/public/HeroSlideshow'
 import { DONATE_HREF } from '@/components/public/nav'
-import { PhotoSlot } from '@/components/public/PhotoSlot'
 import { ProductGrid } from '@/components/public/ProductGrid'
+import { ValuesSection } from '@/components/public/ValuesSection'
 import {
   getImpactMetrics,
+  getOrganizationValues,
   getPageSections,
   getPartners,
+  getPublishedEntrepreneurs,
   getPublishedPosts,
   getPublishedPrograms,
   getPublishedProducts,
+  getSectors,
   getSiteSettings,
   getTestimonials,
 } from '@/lib/data/public'
@@ -27,17 +32,31 @@ import {
 const container = 'mx-auto max-w-[1320px] px-4 md:px-8'
 
 export default async function HomePage() {
-  const [sections, settings, programs, metrics, posts, testimonials, partners, products] =
-    await Promise.all([
-      getPageSections(),
-      getSiteSettings(),
-      getPublishedPrograms(),
-      getImpactMetrics(),
-      getPublishedPosts(),
-      getTestimonials(),
-      getPartners(),
-      getPublishedProducts(),
-    ])
+  const [
+    sections,
+    settings,
+    programs,
+    metrics,
+    posts,
+    testimonials,
+    partners,
+    products,
+    values,
+    entrepreneurs,
+    sectors,
+  ] = await Promise.all([
+    getPageSections(),
+    getSiteSettings(),
+    getPublishedPrograms(),
+    getImpactMetrics(),
+    getPublishedPosts(),
+    getTestimonials(),
+    getPartners(),
+    getPublishedProducts(),
+    getOrganizationValues(),
+    getPublishedEntrepreneurs(),
+    getSectors(),
+  ])
   const hero = sections.home_hero
   const mission = sections.home_mission
   const programsSection = sections.home_programs
@@ -46,61 +65,87 @@ export default async function HomePage() {
   const news = sections.home_news
   const cta = sections.home_cta
   const programTitle = new Map(programs.map((p) => [p.id, p.title]))
+  const sectorName = new Map(sectors.map((x) => [x.id, x.name]))
+  const heroImages = [hero?.imageUrl, ...(hero?.gallery ?? [])].filter((src): src is string =>
+    Boolean(src),
+  )
+  const featuredEntrepreneurs = (
+    entrepreneurs.some((e) => e.isFeatured)
+      ? entrepreneurs.filter((e) => e.isFeatured)
+      : entrepreneurs
+  ).slice(0, 3)
   const featured = products.filter((p) => p.isFeatured).slice(0, 4)
   const shownProducts = featured.length ? featured : products.slice(0, 4)
 
   return (
     <>
-      {/* Bandeau principal */}
-      <section className={`${container} grid gap-10 pt-10 pb-16 md:grid-cols-[1.1fr_0.9fr] md:items-center md:pt-16 md:pb-24`}>
-        <div>
-          <p className="rise text-ochre text-xs font-semibold tracking-[0.2em] uppercase">
-            {settings.organizationName} · République démocratique du Congo
-          </p>
-          <h1
-            className="rise font-display mt-5 text-5xl leading-[1.02] font-medium tracking-tight sm:text-6xl lg:text-7xl"
-            style={{ '--i': 1 } as React.CSSProperties}
-          >
-            <Emphasis text={hero?.title ?? settings.organizationName} />
-          </h1>
-          {hero?.body && (
-            <p
-              className="rise text-ink-soft mt-6 max-w-[46ch] text-lg md:text-xl"
-              style={{ '--i': 2 } as React.CSSProperties}
-            >
-              {hero.body}
+      {/* Bandeau principal : photos réelles de femmes et de jeunes au travail, voile bleu marine */}
+      <section className="on-navy relative isolate overflow-hidden">
+        {heroImages.length > 0 ? (
+          <HeroSlideshow images={heroImages} />
+        ) : (
+          <div className="hero-empty absolute inset-0 -z-10" aria-hidden />
+        )}
+        <div
+          className="from-navy via-navy/85 to-navy/15 md:via-navy/70 absolute inset-0 -z-10 bg-gradient-to-r"
+          aria-hidden
+        />
+        <div className={`${container} py-20 md:py-28 lg:py-36`}>
+          <div className="max-w-2xl">
+            <p className="rise text-orange text-xs font-bold tracking-[0.2em] uppercase">
+              {settings.organizationName} · République démocratique du Congo
             </p>
-          )}
-          <div className="rise mt-9 flex flex-wrap gap-3" style={{ '--i': 3 } as React.CSSProperties}>
-            <ButtonLink href={hero?.buttonHref ?? DONATE_HREF}>
-              <HandHeart size={18} aria-hidden />
-              {hero?.buttonLabel ?? 'Faire un don'}
-            </ButtonLink>
-            <ButtonLink href="/nos-programmes" variant="outline">
-              Nos programmes
-            </ButtonLink>
+            <h1
+              className="rise font-display mt-5 text-4xl leading-[1.06] font-extrabold text-balance sm:text-5xl lg:text-6xl"
+              style={{ '--i': 1 } as React.CSSProperties}
+            >
+              <Emphasis text={hero?.title ?? settings.organizationName} onDark />
+            </h1>
+            <span className="rise bg-orange mt-6 block h-1 w-24 rounded" aria-hidden />
+            {hero?.body && (
+              <p
+                className="rise mt-6 max-w-[46ch] text-lg text-white/95 md:text-xl"
+                style={{ '--i': 2 } as React.CSSProperties}
+              >
+                {hero.body}
+              </p>
+            )}
+            <div
+              className="rise mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+              style={{ '--i': 3 } as React.CSSProperties}
+            >
+              <ButtonLink
+                href={hero?.buttonHref ?? DONATE_HREF}
+                className="bg-orange text-navy shadow-lg shadow-black/20 hover:bg-white"
+              >
+                <HandHeart size={18} aria-hidden />
+                {hero?.buttonLabel ?? 'Faire un don'}
+              </ButtonLink>
+              <ButtonLink href="/nos-programmes" variant="onDark">
+                Nos programmes
+              </ButtonLink>
+            </div>
           </div>
         </div>
-        <PhotoSlot
-          src={hero?.imageUrl}
-          alt="Action de la fondation sur le terrain"
-          brief="photo réelle d’une action de terrain (avec l’accord des personnes)"
-          className="aspect-[4/5] md:aspect-[4/5]"
-          sizes="(min-width: 768px) 45vw, 100vw"
-          priority
-        />
+        {heroImages.length === 0 && (
+          <p className="bg-navy/80 absolute right-3 bottom-3 max-w-[34ch] px-2.5 py-1.5 text-[0.72rem] leading-snug text-white">
+            Photos à fournir : femmes et jeunes entrepreneurs en activité (avec leur accord)
+          </p>
+        )}
       </section>
 
       {/* Mission */}
       {mission && (
         <section className="bg-accent text-accent-ink">
           <div className={`${container} grid gap-8 py-16 md:grid-cols-[0.8fr_1.2fr] md:py-24`}>
-            <h2 className="font-display text-4xl font-medium md:text-5xl" data-reveal>
+            <h2 className="font-display text-4xl font-bold md:text-5xl" data-reveal>
               {mission.title}
             </h2>
             <div data-reveal>
               {mission.body && (
-                <p className="font-display text-2xl leading-snug md:text-3xl">{mission.body}</p>
+                <p className="font-display text-2xl leading-snug font-medium md:text-3xl">
+                  {mission.body}
+                </p>
               )}
               {mission.buttonHref && (
                 <Link
@@ -115,6 +160,13 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Valeurs et principes d'action */}
+      <ValuesSection
+        title={sections.home_values?.title ?? 'Nos valeurs et principes d’action'}
+        intro={sections.home_values?.body}
+        values={values}
+      />
 
       {/* Programmes */}
       {programs.length > 0 && (
@@ -151,18 +203,34 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Boutique solidaire */}
-      {products.length > 0 && (
+      {/* Vitrine de l'entrepreneur */}
+      {featuredEntrepreneurs.length > 0 && (
         <section className={`${container} py-16 md:py-24`}>
           <SectionHeading
-            title={shop?.title ?? 'Boutique solidaire'}
+            title={shop?.title ?? 'Vitrine de l’entrepreneur'}
             intro={shop?.body}
-            href={shop?.buttonHref ?? '/boutique'}
-            linkLabel={shop?.buttonLabel ?? 'Voir la boutique'}
+            href={shop?.buttonHref ?? '/vitrine'}
+            linkLabel={shop?.buttonLabel ?? 'Voir la Vitrine de l’entrepreneur'}
           />
-          <div className="mt-10">
-            <ProductGrid products={shownProducts} />
-          </div>
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredEntrepreneurs.map((e) => (
+              <li key={e.id} data-reveal>
+                <EntrepreneurCard
+                  entrepreneur={e}
+                  sectorName={e.sectorId ? sectorName.get(e.sectorId) : null}
+                  productCount={products.filter((p) => p.entrepreneurId === e.id).length}
+                />
+              </li>
+            ))}
+          </ul>
+          {shownProducts.length > 0 && (
+            <div className="mt-16">
+              <h3 className="font-display text-2xl font-bold">À découvrir</h3>
+              <div className="mt-6">
+                <ProductGrid products={shownProducts} />
+              </div>
+            </div>
+          )}
         </section>
       )}
 
@@ -210,7 +278,7 @@ export default async function HomePage() {
       )}
 
       {/* S'engager */}
-      <section className="bg-ochre-soft">
+      <section className="on-navy">
         <div className={`${container} py-16 md:py-24`}>
           <SectionHeading title={cta?.title ?? 'S’engager à nos côtés'} intro={cta?.body} />
           <ul className="mt-10 grid gap-4 md:grid-cols-3">
@@ -237,12 +305,12 @@ export default async function HomePage() {
               <li key={href} data-reveal>
                 <Link
                   href={href}
-                  className="bg-cream hover:border-ink border-line flex h-full flex-col border p-6 transition md:p-8"
+                  className="hover:border-orange border-line flex h-full flex-col rounded-3xl border bg-white/5 p-6 transition md:p-8"
                 >
-                  <Icon size={32} className="text-accent" aria-hidden />
-                  <span className="font-display mt-6 text-3xl font-medium">{title}</span>
+                  <Icon size={32} className="text-orange" aria-hidden />
+                  <span className="font-display mt-6 text-3xl font-bold">{title}</span>
                   <span className="text-ink-soft mt-2">{text}</span>
-                  <span className="text-accent mt-6 inline-flex items-center gap-2 text-sm font-semibold">
+                  <span className="text-orange mt-6 inline-flex items-center gap-2 text-sm font-semibold">
                     Continuer
                     <ArrowRight size={16} aria-hidden />
                   </span>

@@ -18,7 +18,26 @@ Demande de Lean Market : **reprendre l'architecture, les outils et le déploieme
 - **Admin** : composants maison (`src/components/admin/`) au lieu de shadcn/ui ; réordonnancement par flèches (plus fiable au doigt que le glisser-déposer) ; Markdown simple pour les textes longs.
 - **Prix à confirmer** : `products.price_amount` peut être vide → « Prix à confirmer » + « Demander le prix sur WhatsApp » ; un tel produit ne peut pas entrer dans le panier.
 - **Next.js 16** avec Cache Components : données en `'use cache'` + `cacheTag`, invalidées par `updateTag` dans les actions de l'admin ; tout `new Date()` rendu à la requête est précédé de `await connection()`.
-- Charte (vert profond, ocre, crème ; Fraunces + Manrope) et logo texte : **propositions à valider**.
+- Charte : remplacée le 13/11/2026 (voir §0 bis) ; logo texte provisoire : **à valider**.
+
+## 0 bis. Modifications demandées par la fondation (13/11/2026, priment aussi sur la suite)
+
+1. **Formulaires de participation aux programmes** (`program_forms`, `program_form_responses`) :
+   champs configurés dans l'admin (`/admin/formulaires`, `src/lib/program-forms.ts`), date limite
+   obligatoire ; passé ce moment le formulaire n'est plus affiché et `/api/participations`
+   refuse l'envoi (vérification en base, à la requête).
+2. **Charte « lumineuse, bleu dominant »** inspirée de mat-durest.vercel.app : bleu marine
+   `#012060`, accent orangé, fond blanc, titres **Montserrat** (+ Manrope). Bandeau d'accueil en
+   photo pleine largeur sous voile bleu, diaporama (`page_sections.gallery`) de photos **réelles**
+   de femmes et de jeunes entrepreneurs ; accroche « Autonomiser les femmes et les jeunes en leur
+   apprenant *un métier* ». Classe `.on-navy` = surface bleu marine qui redéfinit les couleurs.
+3. **Valeurs et principes d'action** (`organization_values`, `/admin/valeurs`) : accueil et
+   La Fondation ; jamais rédigés à la place de la fondation.
+4. **« Vitrine de l'entrepreneur » remplace « Boutique solidaire »** : `sectors`, `entrepreneurs`
+   (la fondation est l'un d'eux, `is_foundation`), `products.entrepreneur_id`. Pages `/vitrine`
+   (par secteur), `/vitrine/produits` (recherche + catégorie + secteur), `/vitrine/[slug]`.
+   `/boutique…` redirige en 301. Panier réservé aux produits de la fondation ; produits des
+   entrepreneurs commandés sur leur WhatsApp (`src/lib/vitrine.ts`) — **règle à confirmer**.
 
 ---
 

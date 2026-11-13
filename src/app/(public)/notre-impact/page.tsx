@@ -46,7 +46,7 @@ export default async function ImpactPage() {
       )}
 
       <section className={`${container} flex flex-wrap items-center justify-between gap-6 py-16`}>
-        <p className="font-display max-w-[30ch] text-3xl font-medium">
+        <p className="font-display max-w-[30ch] text-3xl font-bold">
           Les actions de terrain, datées et illustrées.
         </p>
         <div className="flex flex-wrap gap-3">

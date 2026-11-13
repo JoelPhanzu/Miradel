@@ -48,5 +48,53 @@ export const migrations: MigrationMeta[] = [
     "bps": true,
     "folderMillis": 1791740215071,
     "hash": "eaa80346cbf5015ae7471dc8786e5a796906592524d62c3c9ff037ac7d8a1136"
+  },
+  {
+    "sql": [
+      "CREATE TABLE `entrepreneurs` (\n\t`id` varchar(36) NOT NULL,\n\t`name` varchar(160) NOT NULL,\n\t`slug` varchar(180) NOT NULL,\n\t`owner_name` varchar(120),\n\t`sector_id` varchar(36),\n\t`program_id` varchar(36),\n\t`tagline` varchar(300),\n\t`story` text,\n\t`location` varchar(160),\n\t`photo_url` varchar(500),\n\t`photo_consent` boolean NOT NULL DEFAULT false,\n\t`cover_image_url` varchar(500),\n\t`whatsapp_number` varchar(20),\n\t`facebook_url` varchar(500),\n\t`is_foundation` boolean NOT NULL DEFAULT false,\n\t`is_published` boolean NOT NULL DEFAULT false,\n\t`is_featured` boolean NOT NULL DEFAULT false,\n\t`position` int NOT NULL DEFAULT 0,\n\t`created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\t`updated_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\tCONSTRAINT `entrepreneurs_id` PRIMARY KEY(`id`),\n\tCONSTRAINT `entrepreneurs_slug_unique` UNIQUE(`slug`)\n);\n",
+      "\nCREATE TABLE `organization_values` (\n\t`id` varchar(36) NOT NULL,\n\t`kind` varchar(10) NOT NULL DEFAULT 'valeur',\n\t`title` varchar(120) NOT NULL,\n\t`description` varchar(600),\n\t`position` int NOT NULL DEFAULT 0,\n\t`is_published` boolean NOT NULL DEFAULT false,\n\t`created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\t`updated_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\tCONSTRAINT `organization_values_id` PRIMARY KEY(`id`)\n);\n",
+      "\nCREATE TABLE `program_form_responses` (\n\t`id` varchar(36) NOT NULL,\n\t`form_id` varchar(36) NOT NULL,\n\t`answers` longtext NOT NULL,\n\t`fields` longtext NOT NULL,\n\t`status` varchar(10) NOT NULL DEFAULT 'nouveau',\n\t`internal_note` text,\n\t`created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\t`updated_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\tCONSTRAINT `program_form_responses_id` PRIMARY KEY(`id`)\n);\n",
+      "\nCREATE TABLE `program_forms` (\n\t`id` varchar(36) NOT NULL,\n\t`program_id` varchar(36) NOT NULL,\n\t`title` varchar(160) NOT NULL,\n\t`intro` text,\n\t`fields` longtext NOT NULL,\n\t`closes_at` datetime,\n\t`success_message` varchar(400),\n\t`is_published` boolean NOT NULL DEFAULT false,\n\t`position` int NOT NULL DEFAULT 0,\n\t`created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\t`updated_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\tCONSTRAINT `program_forms_id` PRIMARY KEY(`id`)\n);\n",
+      "\nCREATE TABLE `sectors` (\n\t`id` varchar(36) NOT NULL,\n\t`name` varchar(120) NOT NULL,\n\t`slug` varchar(140) NOT NULL,\n\t`description` varchar(400),\n\t`position` int NOT NULL DEFAULT 0,\n\t`created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\t`updated_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\n\tCONSTRAINT `sectors_id` PRIMARY KEY(`id`),\n\tCONSTRAINT `sectors_slug_unique` UNIQUE(`slug`)\n);\n",
+      "\nALTER TABLE `page_sections` ADD `gallery` longtext;",
+      "\nALTER TABLE `products` ADD `entrepreneur_id` varchar(36);",
+      "\nALTER TABLE `entrepreneurs` ADD CONSTRAINT `entrepreneurs_sector_id_sectors_id_fk` FOREIGN KEY (`sector_id`) REFERENCES `sectors`(`id`) ON DELETE set null ON UPDATE no action;",
+      "\nALTER TABLE `entrepreneurs` ADD CONSTRAINT `entrepreneurs_program_id_programs_id_fk` FOREIGN KEY (`program_id`) REFERENCES `programs`(`id`) ON DELETE set null ON UPDATE no action;",
+      "\nALTER TABLE `program_form_responses` ADD CONSTRAINT `program_form_responses_form_id_program_forms_id_fk` FOREIGN KEY (`form_id`) REFERENCES `program_forms`(`id`) ON DELETE cascade ON UPDATE no action;",
+      "\nALTER TABLE `program_forms` ADD CONSTRAINT `program_forms_program_id_programs_id_fk` FOREIGN KEY (`program_id`) REFERENCES `programs`(`id`) ON DELETE cascade ON UPDATE no action;",
+      "\nCREATE INDEX `program_form_responses_form_idx` ON `program_form_responses` (`form_id`);",
+      "\nCREATE INDEX `program_forms_program_idx` ON `program_forms` (`program_id`);",
+      "\nALTER TABLE `products` ADD CONSTRAINT `products_entrepreneur_id_entrepreneurs_id_fk` FOREIGN KEY (`entrepreneur_id`) REFERENCES `entrepreneurs`(`id`) ON DELETE set null ON UPDATE no action;"
+    ],
+    "bps": true,
+    "folderMillis": 1794569665786,
+    "hash": "5c14d45677b1cd6b28b97b10b413d39e10bb812ebb57c8b5e4cfd3e651417483"
+  },
+  {
+    "sql": [
+      "-- La fondation devient la première « vitrine » : ses produits existants lui sont rattachés.\n-- (Sur une base neuve, settings est encore vide ici : le remplissage initial s'en charge.)\nINSERT INTO `entrepreneurs` (`id`, `name`, `slug`, `is_foundation`, `is_published`, `is_featured`, `position`)\nSELECT UUID(), `organization_name`, 'fondation-miradel-fevepa', 1, 1, 1, 0 FROM `settings` WHERE `id` = 1;\n",
+      "\nUPDATE `products` SET `entrepreneur_id` = (SELECT `id` FROM `entrepreneurs` WHERE `is_foundation` = 1 LIMIT 1)\nWHERE `entrepreneur_id` IS NULL;\n",
+      "\n-- « Vitrine de l'entrepreneur » remplace « Boutique solidaire » (textes restés à leur valeur de départ).\nUPDATE `page_sections` SET `title` = 'Vitrine de l’entrepreneur',\n  `body` = 'Les produits de la fondation et des entrepreneurs qu’elle accompagne.'\nWHERE `key` IN ('home_shop', 'shop_intro') AND `title` = 'Boutique solidaire';\n",
+      "\nUPDATE `page_sections` SET `button_label` = 'Voir la vitrine' WHERE `key` = 'home_shop' AND `button_label` = 'Voir la boutique';\n",
+      "\nUPDATE `page_sections` SET `button_href` = '/vitrine' WHERE `button_href` = '/boutique';\n",
+      "\nUPDATE `promotions` SET `cta_href` = '/vitrine' WHERE `cta_href` = '/boutique';\n",
+      "\nUPDATE `promotions` SET `cta_label` = 'Voir la vitrine' WHERE `cta_label` = 'Voir la boutique';\n",
+      "\nUPDATE `page_sections` SET `body` = 'Les offres en cours de la vitrine de l’entrepreneur.'\nWHERE `key` = 'promotions_intro' AND `body` = 'Les offres en cours de la boutique solidaire.';\n",
+      "\n-- Nouvelle accroche demandée par la fondation (seulement si le titre de départ n'a pas été modifié).\nUPDATE `page_sections` SET `title` = 'Autonomiser les femmes et les jeunes en leur apprenant *un métier*'\nWHERE `key` = 'home_hero' AND `title` = 'Autonomiser les femmes et les jeunes *vulnérables* en RDC';\n",
+      "\nINSERT IGNORE INTO `page_sections` (`id`, `key`, `title`, `body`) VALUES\n  (UUID(), 'home_values', 'Nos valeurs et principes d’action', NULL),\n  (UUID(), 'vitrine_entrepreneurs_intro', 'Les entrepreneurs que nous accompagnons', NULL),\n  (UUID(), 'vitrine_products_intro', 'Tous les produits', NULL);\n"
+    ],
+    "bps": true,
+    "folderMillis": 1794569791839,
+    "hash": "8f374f2a6d465f798d6714a05a6ca8fa03a3041919c7a482b1ff15e336abb8d5"
+  },
+  {
+    "sql": [
+      "-- Le nom complet « Vitrine de l'entrepreneur » partout (boutons restés à leur valeur de départ).\nUPDATE `page_sections` SET `button_label` = 'Voir la Vitrine de l’entrepreneur'\nWHERE `button_label` = 'Voir la vitrine';\n",
+      "\nUPDATE `promotions` SET `cta_label` = 'Voir la Vitrine de l’entrepreneur'\nWHERE `cta_label` = 'Voir la vitrine';\n",
+      "\nUPDATE `page_sections` SET `body` = 'Les offres en cours de la Vitrine de l’entrepreneur.'\nWHERE `key` = 'promotions_intro' AND `body` = 'Les offres en cours de la vitrine de l’entrepreneur.';\n"
+    ],
+    "bps": true,
+    "folderMillis": 1794580070524,
+    "hash": "6df22bd1e999a83aabd2a3c8090db2aed775d94a84197eccf214e9e3e5c2681c"
   }
 ]

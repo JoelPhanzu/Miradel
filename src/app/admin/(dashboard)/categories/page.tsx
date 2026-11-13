@@ -18,7 +18,7 @@ export default async function CategoriesPage() {
   return (
     <AdminPage
       title="Catégories"
-      description="Elles regroupent les produits de la boutique (ex. Agro-alimentaire, Hygiène)."
+      description="Elles regroupent les produits de la Vitrine de l’entrepreneur (ex. Agro-alimentaire, Hygiène) ; la recherche du site les propose en filtre."
       action={{ href: '/admin/categories/nouveau', label: 'Ajouter' }}
     >
       {rows.length === 0 ? (

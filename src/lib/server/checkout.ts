@@ -9,6 +9,7 @@ import { eq } from 'drizzle-orm'
 import { getDb, isDatabaseConfigured, schema } from '@/db'
 import {
   getPromotions,
+  getPublishedEntrepreneurs,
   getPublishedProducts,
   getPublishedPrograms,
   getSiteSettings,
@@ -28,6 +29,7 @@ import {
   newsletterSchema,
   orderSchema,
 } from '@/lib/validation/public'
+import { isCartProduct } from '@/lib/vitrine'
 import { buildWhatsAppUrl } from '@/lib/whatsapp'
 import type { Product } from '@/types/content'
 
@@ -35,7 +37,8 @@ export type SubmitResult =
   | { ok: true; reference: string | null; whatsappUrl: string; saved: boolean }
   | { ok: false; status: number; errors: Record<string, string> }
 
-export type SimpleResult = { ok: true } | { ok: false; status: number; errors: Record<string, string> }
+export type SimpleResult =
+  { ok: true } | { ok: false; status: number; errors: Record<string, string> }
 
 function fieldErrors(issues: { path: PropertyKey[]; message: string }[]): Record<string, string> {
   const errors: Record<string, string> = {}
@@ -70,15 +73,15 @@ export async function createOrder(input: unknown): Promise<SubmitResult> {
   if (!parsed.success) return { ok: false, status: 422, errors: fieldErrors(parsed.error.issues) }
   const data = parsed.data
 
-  const [products, promotions, settings] = await Promise.all([
+  const [products, promotions, settings, entrepreneurs] = await Promise.all([
     getPublishedProducts(),
     getPromotions(),
     getSiteSettings(),
+    getPublishedEntrepreneurs(),
   ])
   const now = new Date()
 
-  const lines: { product: Product; item: (typeof data.items)[number]; price: EffectivePrice }[] =
-    []
+  const lines: { product: Product; item: (typeof data.items)[number]; price: EffectivePrice }[] = []
   for (const item of data.items) {
     const product = products.find((p) => p.id === item.productId)
     if (!product) {
@@ -86,6 +89,14 @@ export async function createOrder(input: unknown): Promise<SubmitResult> {
         ok: false,
         status: 422,
         errors: { items: 'Un produit du panier n’est plus disponible' },
+      }
+    }
+    // Les produits des entrepreneurs accompagnés se commandent auprès d'eux, pas au panier.
+    if (!isCartProduct(product, entrepreneurs)) {
+      return {
+        ok: false,
+        status: 422,
+        errors: { items: `« ${product.name} » se commande directement auprès de son vendeur` },
       }
     }
     if (product.stock !== null && product.stock < item.quantity) {
@@ -251,7 +262,11 @@ export async function createContactMessage(input: unknown): Promise<SimpleResult
   if (!parsed.success) return { ok: false, status: 422, errors: fieldErrors(parsed.error.issues) }
   const data = parsed.data
   if (!isDatabaseConfigured()) {
-    return { ok: false, status: 503, errors: { form: 'Envoi indisponible. Écrivez-nous sur WhatsApp.' } }
+    return {
+      ok: false,
+      status: 503,
+      errors: { form: 'Envoi indisponible. Écrivez-nous sur WhatsApp.' },
+    }
   }
   try {
     await getDb()

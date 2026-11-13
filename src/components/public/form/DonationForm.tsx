@@ -110,7 +110,7 @@ export function DonationForm({
   if (done) {
     return (
       <div role="status" className="bg-accent-soft grid gap-5 p-6 md:p-10">
-        <h2 className="font-display text-4xl font-medium">Merci pour votre générosité</h2>
+        <h2 className="font-display text-4xl font-bold">Merci pour votre générosité</h2>
         <p className="max-w-[52ch]">
           {done.reference
             ? 'Votre déclaration de don est enregistrée. L’équipe de la fondation vérifie la réception des fonds et vous confirme votre don.'
@@ -185,7 +185,11 @@ export function DonationForm({
             ))}
           </div>
         )}
-        <Field id="don-amount" label={`Montant (${currency === 'USD' ? 'USD' : 'FC'})`} error={errors.amount}>
+        <Field
+          id="don-amount"
+          label={`Montant (${currency === 'USD' ? 'USD' : 'FC'})`}
+          error={errors.amount}
+        >
           <input
             id="don-amount"
             inputMode="decimal"
@@ -222,11 +226,7 @@ export function DonationForm({
           optional
           hint="Indiquée dans le SMS de confirmation mobile money ou sur l’avis de virement."
         >
-          <input
-            id="don-transactionReference"
-            name="transactionReference"
-            className={inputClass}
-          />
+          <input id="don-transactionReference" name="transactionReference" className={inputClass} />
         </Field>
       )}
 

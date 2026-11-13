@@ -22,7 +22,7 @@ import {
 import { requireUser } from '@/lib/auth/session'
 import { CACHE_TAGS } from '@/lib/data/public'
 
-const TAGS = [CACHE_TAGS.products]
+const TAGS = [CACHE_TAGS.products, CACHE_TAGS.entrepreneurs]
 
 export async function saveProduct(
   id: string | null,
@@ -53,6 +53,7 @@ export async function saveProduct(
   const values = {
     name,
     categoryId: optionalText(fd, 'categoryId'),
+    entrepreneurId: optionalText(fd, 'entrepreneurId'),
     description: optionalText(fd, 'description'),
     packaging: optionalText(fd, 'packaging'),
     composition: optionalText(fd, 'composition'),

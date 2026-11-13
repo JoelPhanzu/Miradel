@@ -13,6 +13,7 @@ import { OrToComplete, RichText } from '@/components/public/ToComplete'
 import {
   getProductBySlug,
   getPromotions,
+  getPublishedEntrepreneurs,
   getPublishedPrograms,
   getPublishedProducts,
   getSiteSettings,
@@ -20,6 +21,7 @@ import {
 import { formatAmount } from '@/lib/format'
 import { productPrice } from '@/lib/pricing/items'
 import { slugParams } from '@/lib/static-params'
+import { productSale } from '@/lib/vitrine'
 import { buildWhatsAppUrl } from '@/lib/whatsapp'
 
 export async function generateStaticParams() {
@@ -34,7 +36,7 @@ export async function generateMetadata({
   const description =
     product.description && product.description !== '[À COMPLÉTER]'
       ? product.description
-      : `${product.name}, produit de la boutique solidaire de la Fondation MIRADEL FEVEPA.`
+      : `${product.name}, sur la vitrine de l’entrepreneur de la Fondation MIRADEL FEVEPA.`
   return {
     title: product.name,
     description,
@@ -45,13 +47,15 @@ export async function generateMetadata({
 /** Prix et ajout au panier : calculés à la requête (offres du jour). */
 async function Purchase({ slug }: { slug: string }) {
   await connection()
-  const [product, promotions, settings] = await Promise.all([
+  const [product, promotions, settings, entrepreneurs] = await Promise.all([
     getProductBySlug(slug),
     getPromotions(),
     getSiteSettings(),
+    getPublishedEntrepreneurs(),
   ])
   if (!product) return null
   const price = productPrice(product, promotions, new Date())
+  const { seller, whatsappUrl } = productSale(product, entrepreneurs, settings, price)
 
   // Données structurées Product (Google) ; l'offre n'apparaît qu'avec un prix confirmé.
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3420'
@@ -60,7 +64,7 @@ async function Purchase({ slug }: { slug: string }) {
     '@type': 'Product',
     name: product.name,
     image: product.images.map((src) => `${site}${src}`),
-    brand: { '@type': 'Organization', name: settings.organizationName },
+    brand: { '@type': 'Organization', name: seller?.name ?? settings.organizationName },
     ...(price && {
       offers: {
         '@type': 'Offer',
@@ -98,7 +102,23 @@ async function Purchase({ slug }: { slug: string }) {
         </ul>
       )}
       <div className="mt-8">
-        {price ? (
+        {whatsappUrl && seller ? (
+          <>
+            <ButtonLink
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="whatsapp"
+            >
+              <WhatsappLogo size={18} weight="fill" aria-hidden />
+              Commander auprès de {seller.name}
+            </ButtonLink>
+            <p className="text-ink-soft mt-3 max-w-[48ch] text-sm">
+              Produit d’un entrepreneur accompagné par la fondation : la commande, le paiement et la
+              livraison se règlent directement avec lui sur WhatsApp.
+            </p>
+          </>
+        ) : price ? (
           <AddToCart
             product={{
               id: product.id,
@@ -132,19 +152,24 @@ async function Purchase({ slug }: { slug: string }) {
 
 async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>, 'params'>) {
   const { slug } = await params
-  const [product, programs] = await Promise.all([getProductBySlug(slug), getPublishedPrograms()])
+  const [product, programs, entrepreneurs] = await Promise.all([
+    getProductBySlug(slug),
+    getPublishedPrograms(),
+    getPublishedEntrepreneurs(),
+  ])
   if (!product) notFound()
   const program = programs.find((p) => p.id === product.programId)
+  const seller = entrepreneurs.find((e) => e.id === product.entrepreneurId)
   const [cover, ...others] = product.images
 
   return (
     <article className="mx-auto max-w-[1320px] px-4 pt-8 pb-24 md:px-8">
       <Link
-        href="/boutique"
+        href={seller ? `/vitrine/${seller.slug}` : '/vitrine/produits'}
         className="text-ink-soft hover:text-ink inline-flex min-h-11 items-center gap-2 text-sm"
       >
         <ArrowLeft size={16} aria-hidden />
-        Toute la boutique
+        {seller ? `Vitrine : ${seller.name}` : 'Tous les produits'}
       </Link>
 
       <div className="mt-6 grid gap-10 md:grid-cols-2 md:gap-16">
@@ -169,7 +194,7 @@ async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>
         </div>
 
         <div className="md:pt-8">
-          <h1 className="rise font-display text-5xl leading-none font-medium tracking-tight md:text-6xl">
+          <h1 className="rise font-display text-5xl leading-none font-bold tracking-tight md:text-6xl">
             {product.name}
           </h1>
           <p className="text-ink-soft mt-3">
@@ -186,6 +211,20 @@ async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>
           </div>
 
           <dl className="divide-line border-line mt-10 divide-y border-y">
+            {seller && (
+              <div className="py-4">
+                <dt className="text-sm font-semibold">Vendu par</dt>
+                <dd className="mt-1">
+                  <Link
+                    href={`/vitrine/${seller.slug}`}
+                    className="text-accent underline underline-offset-4"
+                  >
+                    {seller.name}
+                  </Link>
+                  {seller.ownerName && <span className="text-ink-soft"> · {seller.ownerName}</span>}
+                </dd>
+              </div>
+            )}
             {product.composition && (
               <div className="py-4">
                 <dt className="text-sm font-semibold">Ingrédients / composition</dt>
@@ -213,10 +252,12 @@ async function ProductPageContent({ params }: Pick<PageProps<'/produits/[slug]'>
             )}
           </dl>
 
-          <p className="text-ink-soft mt-8 max-w-[52ch] text-sm">
-            Commande confirmée sur WhatsApp. Paiement par mobile money, virement, à la livraison ou
-            au retrait.
-          </p>
+          {(!seller || seller.isFoundation) && (
+            <p className="text-ink-soft mt-8 max-w-[52ch] text-sm">
+              Commande confirmée sur WhatsApp. Paiement par mobile money, virement, à la livraison
+              ou au retrait.
+            </p>
+          )}
         </div>
       </div>
     </article>

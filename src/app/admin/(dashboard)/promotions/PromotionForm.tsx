@@ -130,13 +130,13 @@ export async function PromotionForm({ promotion }: { promotion?: Promotion }) {
             <TextField
               name="ctaLabel"
               label="Texte du bouton"
-              defaultValue={promotion?.ctaLabel ?? 'Voir la boutique'}
+              defaultValue={promotion?.ctaLabel ?? 'Voir la Vitrine de l’entrepreneur'}
             />
             <TextField
               name="ctaHref"
               label="Lien du bouton"
-              defaultValue={promotion?.ctaHref ?? '/boutique'}
-              hint="/boutique ou /promotions"
+              defaultValue={promotion?.ctaHref ?? '/vitrine'}
+              hint="/vitrine ou /promotions"
             />
           </div>
           <TextField

@@ -6,7 +6,13 @@ import { RichText } from './ToComplete'
  * Texte juridique saisi dans l'admin (Textes et images du site).
  * Aucun texte n'est inventé : tant qu'il n'est pas fourni et validé, « [À COMPLÉTER] » s'affiche.
  */
-export async function LegalPage({ sectionKey, fallbackTitle }: { sectionKey: string; fallbackTitle: string }) {
+export async function LegalPage({
+  sectionKey,
+  fallbackTitle,
+}: {
+  sectionKey: string
+  fallbackTitle: string
+}) {
   const section = (await getPageSections())[sectionKey]
   return (
     <>

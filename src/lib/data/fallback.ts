@@ -11,7 +11,37 @@ import {
   seedSettings,
   TO_COMPLETE,
 } from '@/db/seed-data'
-import type { Category, PageSection, Product, Program, SiteSettings } from '@/types/content'
+import type {
+  Category,
+  Entrepreneur,
+  PageSection,
+  Product,
+  Program,
+  SiteSettings,
+} from '@/types/content'
+
+const FOUNDATION_SEED_ID = 'seed-fondation'
+
+/** La fondation, première vitrine (ses produits se commandent avec le panier). */
+export const fallbackEntrepreneurs: Entrepreneur[] = [
+  {
+    id: FOUNDATION_SEED_ID,
+    slug: 'fondation-miradel-fevepa',
+    name: seedSettings.organizationName,
+    ownerName: null,
+    sectorId: null,
+    programId: null,
+    tagline: null,
+    story: null,
+    location: null,
+    photoUrl: null,
+    coverImageUrl: null,
+    whatsappNumber: null,
+    facebookUrl: null,
+    isFoundation: true,
+    isFeatured: true,
+  },
+]
 
 export const fallbackSettings: SiteSettings = seedSettings
 
@@ -43,6 +73,7 @@ export const fallbackProducts: Product[] = seedProducts.map(([category, name, sl
   composition: null,
   usageTips: null,
   categoryId: `seed-${category}`,
+  entrepreneurId: FOUNDATION_SEED_ID,
   priceAmount: null,
   currency: 'CDF',
   compareAtAmount: null,
@@ -60,6 +91,7 @@ export const fallbackPageSections: PageSection[] = seedPageSections.map((s) => (
   body: s.body ?? null,
   imageUrl: null,
   secondaryImageUrl: null,
+  gallery: [],
   buttonLabel: s.buttonLabel ?? null,
   buttonHref: s.buttonHref ?? null,
 }))

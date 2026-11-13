@@ -54,13 +54,16 @@ async function Article({ params }: Pick<PageProps<'/actualites/[slug]'>, 'params
           {program && (
             <>
               {' · '}
-              <Link href={`/nos-programmes/${program.slug}`} className="underline underline-offset-4">
+              <Link
+                href={`/nos-programmes/${program.slug}`}
+                className="underline underline-offset-4"
+              >
                 {program.title}
               </Link>
             </>
           )}
         </p>
-        <h1 className="rise font-display mt-4 pb-1 text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl">
+        <h1 className="rise font-display mt-4 pb-1 text-5xl leading-[1.04] font-bold tracking-tight md:text-6xl">
           {post.title}
         </h1>
         {post.excerpt && <p className="text-ink-soft mt-6 text-xl">{post.excerpt}</p>}

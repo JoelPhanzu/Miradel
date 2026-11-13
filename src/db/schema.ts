@@ -292,7 +292,144 @@ export const testimonials = mysqlTable(
 )
 
 // ---------------------------------------------------------------------------
-// Boutique solidaire
+// Valeurs et principes d'action
+// ---------------------------------------------------------------------------
+
+export const VALUE_KINDS = ['valeur', 'principe'] as const
+
+export const organizationValues = mysqlTable('organization_values', {
+  id: id(),
+  kind: varchar('kind', { length: 10, enum: VALUE_KINDS }).notNull().default('valeur'),
+  title: varchar('title', { length: 120 }).notNull(),
+  description: varchar('description', { length: 600 }),
+  position: int('position').notNull().default(0),
+  isPublished: boolean('is_published').notNull().default(false),
+  ...timestamps,
+})
+
+// ---------------------------------------------------------------------------
+// Formulaires de participation aux programmes (champs configurés dans l'admin)
+// ---------------------------------------------------------------------------
+
+export const FORM_FIELD_TYPES = [
+  'text',
+  'textarea',
+  'tel',
+  'email',
+  'number',
+  'date',
+  'select',
+  'radio',
+  'checkboxes',
+  'consent',
+] as const
+
+export type FormFieldType = (typeof FORM_FIELD_TYPES)[number]
+
+export interface FormFieldDef {
+  /** Identifiant stable (les réponses y font référence). */
+  id: string
+  label: string
+  type: FormFieldType
+  required: boolean
+  help?: string | null
+  /** Choix proposés (liste déroulante, choix unique, cases à cocher). */
+  options?: string[]
+}
+
+export type FormAnswers = Record<string, string | string[]>
+
+export const programForms = mysqlTable(
+  'program_forms',
+  {
+    id: id(),
+    programId: varchar('program_id', { length: 36 })
+      .notNull()
+      .references(() => programs.id, { onDelete: 'cascade' }),
+    title: varchar('title', { length: 160 }).notNull(),
+    intro: text('intro'),
+    fields: jsonText<FormFieldDef[]>('fields').notNull(),
+    // Date limite : passé ce moment, le formulaire n'est plus accessible.
+    closesAt: datetime('closes_at', { mode: 'date' }),
+    successMessage: varchar('success_message', { length: 400 }),
+    isPublished: boolean('is_published').notNull().default(false),
+    position: int('position').notNull().default(0),
+    ...timestamps,
+  },
+  (t) => [index('program_forms_program_idx').on(t.programId)],
+)
+
+export const programFormResponses = mysqlTable(
+  'program_form_responses',
+  {
+    id: id(),
+    formId: varchar('form_id', { length: 36 })
+      .notNull()
+      .references(() => programForms.id, { onDelete: 'cascade' }),
+    answers: jsonText<FormAnswers>('answers').notNull(),
+    // Copie des champs au moment de l'envoi : la réponse reste lisible si le formulaire change.
+    fields: jsonText<FormFieldDef[]>('fields').notNull(),
+    status: varchar('status', { length: 10, enum: ['nouveau', 'en_cours', 'traité'] })
+      .notNull()
+      .default('nouveau'),
+    internalNote: text('internal_note'),
+    ...timestamps,
+  },
+  (t) => [index('program_form_responses_form_idx').on(t.formId)],
+)
+
+// ---------------------------------------------------------------------------
+// Vitrine de l'entrepreneur : secteurs, entrepreneurs accompagnés, produits
+// ---------------------------------------------------------------------------
+
+export const sectors = mysqlTable(
+  'sectors',
+  {
+    id: id(),
+    name: varchar('name', { length: 120 }).notNull(),
+    slug: varchar('slug', { length: 140 }).notNull(),
+    description: varchar('description', { length: 400 }),
+    position: int('position').notNull().default(0),
+    ...timestamps,
+  },
+  (t) => [uniqueIndex('sectors_slug_unique').on(t.slug)],
+)
+
+export const entrepreneurs = mysqlTable(
+  'entrepreneurs',
+  {
+    id: id(),
+    // Nom de l'activité ou de la boutique .
+    name: varchar('name', { length: 160 }).notNull(),
+    slug: varchar('slug', { length: 180 }).notNull(),
+    // Porteur ou porteuse de projet.
+    ownerName: varchar('owner_name', { length: 120 }),
+    sectorId: varchar('sector_id', { length: 36 }).references(() => sectors.id, {
+      onDelete: 'set null',
+    }),
+    programId: programRef(),
+    tagline: varchar('tagline', { length: 300 }),
+    story: text('story'),
+    location: varchar('location', { length: 160 }),
+    photoUrl: varchar('photo_url', { length: 500 }),
+    // Droit à l'image : le portrait ne s'affiche qu'avec l'accord de la personne.
+    photoConsent: boolean('photo_consent').notNull().default(false),
+    coverImageUrl: varchar('cover_image_url', { length: 500 }),
+    // Vide = les demandes passent par le WhatsApp de la fondation.
+    whatsappNumber: varchar('whatsapp_number', { length: 20 }),
+    facebookUrl: varchar('facebook_url', { length: 500 }),
+    // La fondation elle-même : ses produits se commandent avec le panier.
+    isFoundation: boolean('is_foundation').notNull().default(false),
+    isPublished: boolean('is_published').notNull().default(false),
+    isFeatured: boolean('is_featured').notNull().default(false),
+    position: int('position').notNull().default(0),
+    ...timestamps,
+  },
+  (t) => [uniqueIndex('entrepreneurs_slug_unique').on(t.slug)],
+)
+
+// ---------------------------------------------------------------------------
+// Produits (vitrine de l'entrepreneur)
 // ---------------------------------------------------------------------------
 
 export const productCategories = mysqlTable(
@@ -319,6 +456,11 @@ export const products = mysqlTable(
     categoryId: varchar('category_id', { length: 36 }).references(() => productCategories.id, {
       onDelete: 'set null',
     }),
+    // Entrepreneur (ou la fondation elle-même) qui fabrique et vend le produit.
+    entrepreneurId: varchar('entrepreneur_id', { length: 36 }).references(
+      () => entrepreneurs.id,
+      { onDelete: 'set null' },
+    ),
     name: varchar('name', { length: 120 }).notNull(),
     slug: varchar('slug', { length: 140 }).notNull(),
     description: text('description'),
@@ -529,6 +671,8 @@ export const pageSections = mysqlTable(
     body: text('body'),
     imageUrl: varchar('image_url', { length: 500 }),
     secondaryImageUrl: varchar('secondary_image_url', { length: 500 }),
+    // Photos supplémentaires (diaporama du bandeau d'accueil).
+    gallery: jsonText<string[] | null>('gallery'),
     buttonLabel: varchar('button_label', { length: 60 }),
     buttonHref: varchar('button_href', { length: 255 }),
     ...timestamps,

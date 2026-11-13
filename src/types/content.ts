@@ -1,5 +1,7 @@
 import type {
   DOCUMENT_TYPES,
+  FormFieldDef,
+  VALUE_KINDS,
   PaymentNumber,
   PROGRAM_STATUSES,
   ProductVariants,
@@ -65,6 +67,8 @@ export interface Product {
   composition: string | null
   usageTips: string | null
   categoryId: string | null
+  /** Entrepreneur (ou fondation) qui vend le produit. */
+  entrepreneurId: string | null
   /** null = prix à confirmer. */
   priceAmount: number | null
   currency: Currency
@@ -140,6 +144,52 @@ export interface PageSection {
   body: string | null
   imageUrl: string | null
   secondaryImageUrl: string | null
+  gallery: string[]
   buttonLabel: string | null
   buttonHref: string | null
+}
+
+export interface OrganizationValue {
+  id: string
+  kind: (typeof VALUE_KINDS)[number]
+  title: string
+  description: string | null
+}
+
+export interface Sector {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+}
+
+export interface Entrepreneur {
+  id: string
+  slug: string
+  name: string
+  ownerName: string | null
+  sectorId: string | null
+  programId: string | null
+  tagline: string | null
+  story: string | null
+  location: string | null
+  /** null si l'accord de diffusion du portrait n'est pas coché. */
+  photoUrl: string | null
+  coverImageUrl: string | null
+  whatsappNumber: string | null
+  facebookUrl: string | null
+  isFoundation: boolean
+  isFeatured: boolean
+}
+
+/** Formulaire de participation publié (la date limite est vérifiée à la requête). */
+export interface ProgramForm {
+  id: string
+  programId: string
+  title: string
+  intro: string | null
+  fields: FormFieldDef[]
+  /** ISO 8601 ; null = pas de date limite saisie (formulaire fermé par prudence). */
+  closesAt: string | null
+  successMessage: string | null
 }

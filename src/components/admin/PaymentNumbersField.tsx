@@ -19,8 +19,8 @@ export function PaymentNumbersField({ defaultValue }: { defaultValue: PaymentNum
       <input type="hidden" name="paymentNumbers" value={JSON.stringify(rows)} />
       {rows.length === 0 && (
         <p className="text-ink-soft text-sm">
-          Aucun numéro enregistré : le client verra « La fondation vous communique le numéro
-          sur WhatsApp ».
+          Aucun numéro enregistré : le client verra « La fondation vous communique le numéro sur
+          WhatsApp ».
         </p>
       )}
       {rows.map((row, i) => (

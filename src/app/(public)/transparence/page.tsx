@@ -41,14 +41,14 @@ export default async function TransparencyPage() {
 
       <div className={`${container} grid gap-16 pb-24 lg:grid-cols-[1fr_1.3fr] lg:gap-20`}>
         <section>
-          <h2 className="font-display text-3xl font-medium">Identité de la fondation</h2>
+          <h2 className="font-display text-3xl font-bold">Identité de la fondation</h2>
           <div className="mt-6">
             <IdentityCard settings={settings} />
           </div>
         </section>
 
         <section>
-          <h2 className="font-display text-3xl font-medium">Documents</h2>
+          <h2 className="font-display text-3xl font-bold">Documents</h2>
           {groups.length === 0 ? (
             <p className="mt-6">
               Statuts, agréments et rapports : <ToCompleteMark />

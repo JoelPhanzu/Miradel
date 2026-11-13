@@ -6,11 +6,14 @@ import type { NextConfig } from 'next'
  */
 const LEGACY_REDIRECTS: { source: string; destination: string }[] = [
   { source: '/product/:slug', destination: '/produits/:slug' },
-  { source: '/nos-produits', destination: '/boutique' },
-  { source: '/shop', destination: '/boutique' },
-  { source: '/commander', destination: '/boutique' },
+  { source: '/nos-produits', destination: '/vitrine' },
+  { source: '/shop', destination: '/vitrine' },
+  { source: '/commander', destination: '/vitrine' },
   // Ancien lien de la carte « Agro-alimentaire » (pointait vers l'accueil) — à vérifier.
-  { source: '/accueil', destination: '/boutique/c/agro-alimentaire' },
+  { source: '/accueil', destination: '/vitrine/produits?categorie=agro-alimentaire' },
+  // « Boutique solidaire » est devenue « Vitrine de l'entrepreneur » (13/11/2026).
+  { source: '/boutique', destination: '/vitrine' },
+  { source: '/boutique/c/:slug', destination: '/vitrine/produits?categorie=:slug' },
   { source: '/mon-compte', destination: '/panier' },
   { source: '/paiement', destination: '/panier' },
 ]

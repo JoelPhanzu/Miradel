@@ -17,8 +17,9 @@ test('pages principales accessibles', async ({ page }) => {
     ['/nos-programmes/sante-communautaire', 'Santé communautaire'],
     ['/notre-impact', 'Notre impact'],
     ['/transparence', 'Transparence'],
-    ['/boutique', 'Boutique solidaire'],
-    ['/boutique/c/hygiene', 'Hygiène'],
+    ['/vitrine', 'Vitrine de l’entrepreneur'],
+    ['/vitrine/produits?categorie=hygiene', 'Tous les produits'],
+    ['/vitrine/fondation-miradel-fevepa', 'Fondation MIRADEL FEVEPA'],
     ['/produits/yaourt-naturel', 'Yaourt Naturel'],
     ['/promotions', 'Offres du moment'],
     ['/sengager', 'S’engager'],
@@ -67,13 +68,15 @@ test('contact : coordonnées, Facebook, lien de confidentialité non vide', asyn
 test('redirections 301 depuis l’ancien WordPress', async ({ request }) => {
   for (const [from, to] of [
     ['/product/yaourt-naturel/', '/produits/yaourt-naturel'],
-    ['/nos-produits/', '/boutique'],
-    ['/shop/', '/boutique'],
+    ['/nos-produits/', '/vitrine'],
+    ['/shop/', '/vitrine'],
+    ['/boutique', '/vitrine'],
+    ['/boutique/c/hygiene', '/vitrine/produits?categorie=hygiene'],
     ['/mon-compte/', '/panier'],
-    ['/accueil/', '/boutique/c/agro-alimentaire'],
+    ['/accueil/', '/vitrine/produits?categorie=agro-alimentaire'],
   ] as const) {
     const response = await request.get(from)
-    expect(response.url(), from).toMatch(new RegExp(`${to}$`))
+    expect(new URL(response.url()).pathname + new URL(response.url()).search, from).toBe(to)
     expect(response.status(), from).toBe(200)
   }
 })
@@ -84,4 +87,31 @@ test('référencement : sitemap, robots, aperçu de partage', async ({ request }
   expect(await (await request.get('/robots.txt')).text()).toContain('Disallow: /admin')
   const og = await request.get('/opengraph-image')
   expect(og.headers()['content-type']).toContain('image/png')
+})
+
+test('accueil : bandeau bleu, nouvelle accroche, valeurs et vitrine', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('en leur apprenant un métier')
+  await expect(
+    page.getByRole('heading', { name: 'Nos valeurs et principes d’action' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: /Voir la vitrine de Fondation MIRADEL/ }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: 'Vitrine de l’entrepreneur', exact: true }).first(),
+  ).toHaveAttribute('href', '/vitrine')
+})
+
+test('vitrine : recherche sans accents et filtre par catégorie', async ({ page }) => {
+  await page.goto('/vitrine')
+  await page.getByRole('searchbox').fill('desinfectant')
+  await page.getByRole('button', { name: 'Rechercher' }).click()
+  await expect(page).toHaveURL(/\/vitrine\/produits\?q=desinfectant/)
+  await expect(page.getByRole('heading', { name: 'Désinfectant Bactérol' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Yaourt Naturel' })).toHaveCount(0)
+
+  await page.goto('/vitrine/produits?categorie=agro-alimentaire')
+  await expect(page.getByRole('heading', { name: 'Yaourt Naturel' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Détergent Multi-Usage' })).toHaveCount(0)
 })

@@ -1,5 +1,9 @@
 import { readFile } from 'node:fs/promises'
-import { ALLOWED_DOCUMENT_TYPES, ALLOWED_IMAGE_TYPES, resolveUploadPath } from '@/lib/server/uploads'
+import {
+  ALLOWED_DOCUMENT_TYPES,
+  ALLOWED_IMAGE_TYPES,
+  resolveUploadPath,
+} from '@/lib/server/uploads'
 
 const CONTENT_TYPES = Object.fromEntries(
   Object.entries({ ...ALLOWED_IMAGE_TYPES, ...ALLOWED_DOCUMENT_TYPES }).map(([type, ext]) => [

@@ -11,12 +11,19 @@ export const metadata: Metadata = { title: 'Produits' }
 
 export default async function ProductsAdminPage() {
   await requireUser()
-  const rows = await getDb().select().from(schema.products).orderBy(asc(schema.products.position))
+  const db = getDb()
+  const [rows, sellers] = await Promise.all([
+    db.select().from(schema.products).orderBy(asc(schema.products.position)),
+    db
+      .select({ id: schema.entrepreneurs.id, name: schema.entrepreneurs.name })
+      .from(schema.entrepreneurs),
+  ])
+  const sellerName = new Map(sellers.map((s) => [s.id, s.name]))
 
   return (
     <AdminPage
       title="Produits"
-      description="L'ordre de la liste est celui de la boutique."
+      description="L'ordre de la liste est celui de la Vitrine de l’entrepreneur."
       action={{ href: '/admin/produits/nouveau', label: 'Ajouter' }}
     >
       {rows.length === 0 ? (
@@ -30,11 +37,11 @@ export default async function ProductsAdminPage() {
                   href={`/admin/produits/${p.id}`}
                   image={<Thumb src={p.images[0]} />}
                   title={p.name}
-                  subtitle={
+                  subtitle={`${
                     p.priceAmount === null
                       ? 'Prix à confirmer'
                       : formatAmount(p.priceAmount, p.currency)
-                  }
+                  }${p.entrepreneurId ? ` · ${sellerName.get(p.entrepreneurId) ?? ''}` : ''}`}
                   aside={
                     <>
                       {p.isPublished ? (

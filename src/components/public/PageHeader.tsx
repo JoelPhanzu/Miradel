@@ -11,7 +11,7 @@ interface PageHeaderProps {
 export function PageHeader({ title, intro, children }: PageHeaderProps) {
   return (
     <header className="mx-auto max-w-[1320px] px-4 pt-14 pb-10 md:px-8 md:pt-20 md:pb-14">
-      <h1 className="rise font-display pb-1 text-5xl leading-[1.02] font-medium tracking-tight md:text-7xl">
+      <h1 className="rise font-display pb-1 text-5xl leading-[1.02] font-bold tracking-tight md:text-7xl">
         <Emphasis text={title} />
       </h1>
       {intro && (

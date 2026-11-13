@@ -64,7 +64,12 @@ export default async function SettingsPage() {
             label="Numéro d’enregistrement / agrément"
             defaultValue={s.registrationNumber}
           />
-          <TextAreaField name="address" label="Adresse du siège" defaultValue={s.address} rows={2} />
+          <TextAreaField
+            name="address"
+            label="Adresse du siège"
+            defaultValue={s.address}
+            rows={2}
+          />
           <TextField
             name="googleMapsUrl"
             label="Lien Google Maps"
@@ -115,7 +120,7 @@ export default async function SettingsPage() {
           ))}
         </FormSection>
 
-        <FormSection title="Numéros mobile money (boutique et dons)">
+        <FormSection title="Numéros mobile money (produits de la fondation et dons)">
           <PaymentNumbersField defaultValue={s.paymentNumbers} />
         </FormSection>
 

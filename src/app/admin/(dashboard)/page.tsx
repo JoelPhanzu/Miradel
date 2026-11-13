@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { desc, eq, inArray } from 'drizzle-orm'
+import { count, desc, eq, inArray } from 'drizzle-orm'
 import { Newspaper, PlusCircle, Tag } from '@phosphor-icons/react/ssr'
 import { AdminPage, Badge, EmptyState, ListCard, ListRow } from '@/components/admin/ui'
 import { getDb, schema } from '@/db'
@@ -40,27 +40,37 @@ export default async function DashboardPage() {
   const user = await requireUser()
   const db = getDb()
 
-  const [pendingOrders, declaredDonations, newMessages, promotions] = await Promise.all([
-    db
-      .select()
-      .from(schema.orders)
-      .where(inArray(schema.orders.status, ['nouvelle', 'confirmée', 'payée']))
-      .orderBy(desc(schema.orders.createdAt))
-      .limit(6),
-    db
-      .select()
-      .from(schema.donations)
-      .where(eq(schema.donations.status, 'déclaré'))
-      .orderBy(desc(schema.donations.createdAt))
-      .limit(6),
-    db
-      .select()
-      .from(schema.contactMessages)
-      .where(eq(schema.contactMessages.status, 'nouveau'))
-      .orderBy(desc(schema.contactMessages.createdAt))
-      .limit(6),
-    getPromotions(),
-  ])
+  const [pendingOrders, declaredDonations, newMessages, promotions, newParticipations] =
+    await Promise.all([
+      db
+        .select()
+        .from(schema.orders)
+        .where(inArray(schema.orders.status, ['nouvelle', 'confirmée', 'payée']))
+        .orderBy(desc(schema.orders.createdAt))
+        .limit(6),
+      db
+        .select()
+        .from(schema.donations)
+        .where(eq(schema.donations.status, 'déclaré'))
+        .orderBy(desc(schema.donations.createdAt))
+        .limit(6),
+      db
+        .select()
+        .from(schema.contactMessages)
+        .where(eq(schema.contactMessages.status, 'nouveau'))
+        .orderBy(desc(schema.contactMessages.createdAt))
+        .limit(6),
+      getPromotions(),
+      db
+        .select({ id: schema.programForms.id, title: schema.programForms.title, n: count() })
+        .from(schema.programFormResponses)
+        .innerJoin(
+          schema.programForms,
+          eq(schema.programFormResponses.formId, schema.programForms.id),
+        )
+        .where(eq(schema.programFormResponses.status, 'nouveau'))
+        .groupBy(schema.programForms.id, schema.programForms.title),
+    ])
   const activeToday = getActivePromotions(promotions, new Date())
 
   const shortcuts = [
@@ -118,6 +128,24 @@ export default async function DashboardPage() {
                   title={`${o.reference} - ${o.customerName}`}
                   subtitle={formatAmount(o.totalAmount, o.currency)}
                   aside={<Badge tone={ORDER_TONES[o.status]}>{o.status}</Badge>}
+                />
+              </li>
+            ))}
+          </ListCard>
+        </Section>
+
+        <Section
+          title="Nouvelles participations"
+          href="/admin/formulaires"
+          empty={newParticipations.length === 0 ? 'Aucune nouvelle réponse aux formulaires.' : null}
+        >
+          <ListCard>
+            {newParticipations.map((f) => (
+              <li key={f.id}>
+                <ListRow
+                  href={`/admin/formulaires/${f.id}/reponses`}
+                  title={f.title}
+                  aside={<Badge tone="warning">{Number(f.n)} nouvelle(s)</Badge>}
                 />
               </li>
             ))}

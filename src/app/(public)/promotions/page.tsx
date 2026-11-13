@@ -11,7 +11,8 @@ import type { PromotionCard } from '@/types/content'
 
 export const metadata: Metadata = {
   title: 'Offres du moment',
-  description: 'Les offres en cours de la boutique solidaire de la Fondation MIRADEL FEVEPA.',
+  description:
+    'Les offres en cours de la vitrine de l’entrepreneur de la Fondation MIRADEL FEVEPA.',
 }
 
 const endFormatter = new Intl.DateTimeFormat('fr-FR', {
@@ -50,7 +51,7 @@ function PromoCard({ promo, today }: { promo: PromotionCard; today: boolean }) {
           </span>
         )}
       </div>
-      <h2 className="font-display mt-5 text-4xl leading-tight font-medium md:text-5xl">
+      <h2 className="font-display mt-5 text-4xl leading-tight font-bold md:text-5xl">
         {promo.title}
       </h2>
       {promo.subtitle && <p className="font-display mt-2 text-2xl">{promo.subtitle}</p>}

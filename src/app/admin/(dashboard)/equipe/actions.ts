@@ -40,10 +40,7 @@ export async function saveMember(
   }
   const db = getDb()
   if (id) {
-    const [before] = await db
-      .select()
-      .from(schema.teamMembers)
-      .where(eq(schema.teamMembers.id, id))
+    const [before] = await db.select().from(schema.teamMembers).where(eq(schema.teamMembers.id, id))
     if (!before) return failure({}, 'Personne introuvable')
     await db.update(schema.teamMembers).set(values).where(eq(schema.teamMembers.id, id))
     await audit('team_members', id, 'UPDATE', user.id, before, values)

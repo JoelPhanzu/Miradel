@@ -95,7 +95,8 @@ export function buildDonationMessage(input: DonationMessageInput): string {
     `Montant : ${formatAmount(input.amount, input.currency)}`,
     `Moyen : ${input.methodLabel}`,
   ]
-  if (input.transactionReference) lines.push(`Référence de transaction : ${input.transactionReference}`)
+  if (input.transactionReference)
+    lines.push(`Référence de transaction : ${input.transactionReference}`)
   if (input.programTitle) lines.push(`Programme soutenu : ${input.programTitle}`)
   lines.push(`Nom : ${input.donorName ?? 'Anonyme'}`)
   if (input.reference) lines.push('', `Référence : ${input.reference}`)

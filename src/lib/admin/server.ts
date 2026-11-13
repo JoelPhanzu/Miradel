@@ -54,7 +54,9 @@ export function optionalInt(fd: FormData, key: string): number | null {
  * null si le champ est vide, NaN si la saisie est invalide.
  */
 export function optionalMoney(fd: FormData, key: string, currency: 'CDF' | 'USD'): number | null {
-  const raw = text(fd, key).replace(/[\s  ]/g, '').replace(',', '.')
+  const raw = text(fd, key)
+    .replace(/[\s  ]/g, '')
+    .replace(',', '.')
   if (!raw) return null
   const value = Number(raw)
   if (!Number.isFinite(value) || value < 0) return Number.NaN

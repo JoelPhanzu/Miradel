@@ -153,7 +153,7 @@ export function SectionHeading({
   return (
     <div className="flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
-        <h2 className="font-display text-4xl leading-tight font-medium md:text-5xl">{title}</h2>
+        <h2 className="font-display text-4xl leading-tight font-bold md:text-5xl">{title}</h2>
         {intro && <p className="text-ink-soft mt-3 max-w-[56ch] text-lg">{intro}</p>}
       </div>
       {href && linkLabel && (

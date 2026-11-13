@@ -74,7 +74,7 @@ export async function savePromotion(
 
   const ctaHref = optionalText(fd, 'ctaHref')
   if (ctaHref && !ctaHref.startsWith('/') && !ctaHref.startsWith('https://')) {
-    errors.ctaHref = 'Lien du site (ex. /boutique) ou adresse https://'
+    errors.ctaHref = 'Lien du site (ex. /vitrine) ou adresse https://'
   }
   if (Object.keys(errors).length) return failure(errors)
 

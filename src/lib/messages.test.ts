@@ -17,7 +17,9 @@ describe('buildOrderMessage', () => {
       deliveryMode: 'livraison',
       deliveryCommune: 'Gombe',
       paymentLabel: 'Mobile money',
-      lines: [{ name: 'Yaourt Naturel', variant: { contenance: '1 L' }, quantity: 2, unitAmount: 1500 }],
+      lines: [
+        { name: 'Yaourt Naturel', variant: { contenance: '1 L' }, quantity: 2, unitAmount: 1500 },
+      ],
       totalAmount: 3000,
       currency: 'CDF',
     })

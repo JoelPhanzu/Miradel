@@ -1,13 +1,8 @@
 import { asc } from 'drizzle-orm'
 import { getDb, schema } from '@/db'
 import { getCurrentUser } from '@/lib/auth/session'
+import { csvCell } from '@/lib/csv'
 import { kinshasaDateString } from '@/lib/dates'
-
-/** Champ CSV sûr : guillemets doublés, et pas de formule interprétée par un tableur. */
-function csvCell(value: string): string {
-  const safe = /^[=+\-@]/.test(value) ? `'${value}` : value
-  return `"${safe.replace(/"/g, '""')}"`
-}
 
 /** Export CSV des abonnés actifs (séparateur « ; » pour Excel en français). */
 export async function GET() {

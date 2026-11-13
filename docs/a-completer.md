@@ -32,7 +32,7 @@ Aucun chiffre n'existe sur l'ancien site. Chaque chiffre publié doit avoir une 
 (rapport, listes de présence…) saisie dans l'admin (champ obligatoire, jamais affiché).
 Témoignages : uniquement réels, avec **accord écrit** (parent ou tuteur pour un mineur).
 
-## 4. Boutique
+## 4. Vitrine (produits de la fondation)
 
 | Produit | Prix | Devise | Contenance / conditionnement | Description, composition, conseils |
 |---|---|---|---|---|
@@ -57,6 +57,18 @@ Témoignages : uniquement réels, avec **accord écrit** (parent ou tuteur pour 
 - Photos réelles des produits, nettes sur fond neutre.
 - Livraison : communes desservies, frais, délai de confirmation d'une commande.
 
+## 4 bis. Nouveautés du 13/11/2026 (à fournir par la fondation)
+
+| Information | Où la saisir dans l'admin | État |
+|---|---|---|
+| **Photos du bandeau d'accueil** : femmes et jeunes entrepreneurs réels, en activité (atelier, champ, commerce), avec leur accord écrit | Textes et images > Accueil > Bandeau principal | aucune : dégradé bleu + mention « Photos à fournir » |
+| **Valeurs et principes d'action** (intitulés et courtes explications, dans les mots de la fondation) | Valeurs et principes | aucun : « [À COMPLÉTER] » affiché |
+| **Entrepreneurs accompagnés** : nom de l'activité, porteur·se (avec accord), secteur, programme, présentation, commune, photos, WhatsApp, produits avec prix | Entrepreneurs, Produits | aucun : seule la vitrine de la fondation existe |
+| **Secteurs d'activité** à utiliser pour le classement | Secteurs d'activité | aucun |
+| **Formulaires de participation** : programmes concernés, questions à poser, dates limites | Formulaires de participation | aucun |
+
+Aucun de ces contenus n'a été inventé ; le site les affiche dès leur saisie.
+
 ## 5. Paiements et dons
 
 - Numéros **mobile money** (opérateur, numéro, nom du titulaire) : Coordonnées et paiement.
@@ -80,8 +92,17 @@ Témoignages : uniquement réels, avec **accord écrit** (parent ou tuteur pour 
 
 ## 8. Décisions à confirmer
 
-- Charte graphique proposée (vert profond, ocre, crème ; Fraunces + Manrope) et **maquette de
-  l'accueil** (desktop + mobile) à valider avant mise en ligne (CLAUDE.md §9 et §15).
+- Charte graphique : passée le 13/11/2026 à la demande de la fondation en **« lumineuse, bleu
+  dominant »** (bleu marine #012060, accent orangé, fond blanc ; Montserrat + Manrope), inspirée
+  de mat-durest.vercel.app. Les maquettes de `docs/maquette/` (ancienne charte verte) sont donc
+  périmées : **faire valider le nouvel accueil** (ordinateur + téléphone).
+- **Vitrine de l'entrepreneur — règle de commande appliquée par défaut** : produits de la
+  fondation au panier ; produits des entrepreneurs commandés **directement auprès d'eux sur
+  WhatsApp** (la fondation n'enregistre pas ces ventes). À confirmer : la fondation veut-elle
+  plutôt centraliser toutes les commandes (et prélever une part, livrer elle-même…) ?
+- Formulaires de participation : sans date limite saisie, un formulaire reste fermé (la date est
+  obligatoire dans l'admin). Les réponses contiennent des données personnelles : durée de
+  conservation à fixer et à mentionner dans la politique de confidentialité.
 - Règles de prix : pas de cumul des promotions ; arrondi des FC à la centaine inférieure.
 - Désinscription newsletter : aujourd'hui par message à la fondation (envoi des lettres hors site).
 

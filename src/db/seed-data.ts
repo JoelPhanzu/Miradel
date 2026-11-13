@@ -22,7 +22,9 @@ export const seedSettings = {
   whatsappNumber: '243811708299',
   emails: ['sylviekashama@gmail.com'],
   // Instagram et TikTok de l'ancien site pointaient vers les pages d'accueil des réseaux : retirés.
-  socialLinks: { facebook: 'https://www.facebook.com/profile.php?id=61586886501323' } as SocialLinks,
+  socialLinks: {
+    facebook: 'https://www.facebook.com/profile.php?id=61586886501323',
+  } as SocialLinks,
   // Numéros mobile money et coordonnées bancaires : à saisir par la fondation depuis l'admin.
   paymentNumbers: [] as PaymentNumber[],
   bankDetails: null as string | null,
@@ -70,7 +72,7 @@ export const seedPageSections: {
   // --- Accueil ---------------------------------------------------------------
   {
     key: 'home_hero',
-    title: 'Autonomiser les femmes et les jeunes *vulnérables* en RDC',
+    title: 'Autonomiser les femmes et les jeunes en leur apprenant *un métier*',
     body: 'Par des actions concrètes et durables.',
     buttonLabel: 'Faire un don',
     buttonHref: '/sengager/faire-un-don',
@@ -89,15 +91,27 @@ export const seedPageSections: {
     buttonLabel: 'Tous les programmes',
     buttonHref: '/nos-programmes',
   },
-  { key: 'home_impact', title: 'Notre impact', buttonLabel: 'Voir notre impact', buttonHref: '/notre-impact' },
+  {
+    key: 'home_impact',
+    title: 'Notre impact',
+    buttonLabel: 'Voir notre impact',
+    buttonHref: '/notre-impact',
+  },
+  { key: 'home_values', title: 'Nos valeurs et principes d’action' },
+  { key: 'vitrine_entrepreneurs_intro', title: 'Les entrepreneurs que nous accompagnons' },
   {
     key: 'home_shop',
-    title: 'Boutique solidaire',
-    body: 'Des produits locaux fabriqués dans le cadre de nos programmes.',
-    buttonLabel: 'Voir la boutique',
-    buttonHref: '/boutique',
+    title: 'Vitrine de l’entrepreneur',
+    body: 'Les produits de la fondation et des entrepreneurs qu’elle accompagne.',
+    buttonLabel: 'Voir la Vitrine de l’entrepreneur',
+    buttonHref: '/vitrine',
   },
-  { key: 'home_news', title: 'Actualités', buttonLabel: 'Toutes les actualités', buttonHref: '/actualites' },
+  {
+    key: 'home_news',
+    title: 'Actualités',
+    buttonLabel: 'Toutes les actualités',
+    buttonHref: '/actualites',
+  },
   {
     key: 'home_cta',
     title: 'S’engager à nos côtés',
@@ -125,13 +139,14 @@ export const seedPageSections: {
   },
   {
     key: 'shop_intro',
-    title: 'Boutique solidaire',
-    body: 'Des produits locaux fabriqués dans le cadre de nos programmes.',
+    title: 'Vitrine de l’entrepreneur',
+    body: 'Les produits de la fondation et des entrepreneurs qu’elle accompagne.',
   },
+  { key: 'vitrine_products_intro', title: 'Tous les produits' },
   {
     key: 'promotions_intro',
     title: 'Offres du moment',
-    body: 'Les offres en cours de la boutique solidaire.',
+    body: 'Les offres en cours de la Vitrine de l’entrepreneur.',
   },
   {
     key: 'engage_intro',
@@ -141,7 +156,11 @@ export const seedPageSections: {
   { key: 'donate_intro', title: 'Faire un don', body: `Utilisation des fonds : ${TO_COMPLETE}` },
   { key: 'volunteer_intro', title: 'Devenir bénévole', body: TO_COMPLETE },
   { key: 'partnership_intro', title: 'Devenir partenaire', body: TO_COMPLETE },
-  { key: 'news_intro', title: 'Actualités', body: 'Les actions de la fondation, datées et illustrées.' },
+  {
+    key: 'news_intro',
+    title: 'Actualités',
+    body: 'Les actions de la fondation, datées et illustrées.',
+  },
   {
     key: 'contact_intro',
     title: 'Contact',

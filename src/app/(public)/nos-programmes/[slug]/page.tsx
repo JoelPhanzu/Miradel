@@ -9,6 +9,7 @@ import { MetricsGrid, PostCard, SectionHeading } from '@/components/public/cards
 import { DONATE_HREF } from '@/components/public/nav'
 import { PhotoSlot } from '@/components/public/PhotoSlot'
 import { ProductGrid } from '@/components/public/ProductGrid'
+import { ProgramForms } from '@/components/public/ProgramForms'
 import { OrToComplete, RichText } from '@/components/public/ToComplete'
 import { PROGRAM_STATUS_LABELS } from '@/lib/admin/labels'
 import {
@@ -67,7 +68,7 @@ async function ProgramPageContent({ params }: Pick<PageProps<'/nos-programmes/[s
             <p className="rise text-ochre text-xs font-semibold tracking-[0.2em] uppercase">
               {PROGRAM_STATUS_LABELS[program.status]}
             </p>
-            <h1 className="rise font-display mt-3 text-5xl leading-[1.02] font-medium tracking-tight md:text-7xl">
+            <h1 className="rise font-display mt-3 text-5xl leading-[1.02] font-bold tracking-tight md:text-7xl">
               {program.title}
             </h1>
             <p className="rise text-ink-soft mt-5 max-w-[52ch] text-lg">
@@ -107,7 +108,7 @@ async function ProgramPageContent({ params }: Pick<PageProps<'/nos-programmes/[s
           <RichText text={program.content} />
         </div>
         <aside className="bg-accent-soft h-fit p-6">
-          <p className="font-display text-2xl font-medium">Soutenir ce programme</p>
+          <p className="font-display text-2xl font-bold">Soutenir ce programme</p>
           <p className="text-ink-soft mt-2 text-sm">
             Vous pouvez indiquer ce programme lors de votre déclaration de don.
           </p>
@@ -118,8 +119,10 @@ async function ProgramPageContent({ params }: Pick<PageProps<'/nos-programmes/[s
         </aside>
       </div>
 
+      <ProgramForms programId={program.id} />
+
       {program.gallery.length > 0 && (
-        <section className={`${container} pb-16`}>
+        <section className={`${container} py-16`}>
           <SectionHeading title="En images" />
           <ul className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">
             {program.gallery.map((src) => (
@@ -152,8 +155,8 @@ async function ProgramPageContent({ params }: Pick<PageProps<'/nos-programmes/[s
         <section className={`${container} py-16`}>
           <SectionHeading
             title="Fabriqué dans ce programme"
-            href="/boutique"
-            linkLabel="Toute la boutique"
+            href="/vitrine"
+            linkLabel="Toute la Vitrine de l’entrepreneur"
           />
           <div className="mt-10">
             <ProductGrid products={ownProducts} />

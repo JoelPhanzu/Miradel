@@ -6,24 +6,29 @@
  * et sont calculés à la requête avec getEffectivePrice().
  */
 import 'server-only'
-import { and, asc, desc, eq, isNotNull, lte } from 'drizzle-orm'
+import { and, asc, desc, eq, isNotNull, isNull, lte, or } from 'drizzle-orm'
 import { cacheLife, cacheTag } from 'next/cache'
 import { getDb, isDatabaseConfigured, schema } from '@/db'
 import type {
   Category,
+  Entrepreneur,
   FoundationDocument,
   ImpactMetric,
   PageSection,
   Partner,
   Post,
+  OrganizationValue,
   Product,
   Program,
+  ProgramForm,
   PromotionCard,
+  Sector,
   SiteSettings,
   TeamMember,
   Testimonial,
 } from '@/types/content'
 import {
+  fallbackEntrepreneurs,
   fallbackPageSections,
   fallbackProductCategories,
   fallbackProducts,
@@ -43,6 +48,9 @@ export const CACHE_TAGS = {
   partners: 'partners',
   testimonials: 'testimonials',
   pageSections: 'page-sections',
+  values: 'values',
+  entrepreneurs: 'entrepreneurs',
+  programForms: 'program-forms',
 } as const
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS]
@@ -260,16 +268,24 @@ export async function getProductCategories(): Promise<Category[]> {
   }, fallbackProductCategories)
 }
 
+/** Produits publiés dont la vitrine (entrepreneur) est elle aussi publiée. */
 export async function getPublishedProducts(): Promise<Product[]> {
   'use cache'
   cacheTag(CACHE_TAGS.products)
+  cacheTag(CACHE_TAGS.entrepreneurs)
   return fromDb(async () => {
     const rows = await getDb()
-      .select()
+      .select({ product: schema.products })
       .from(schema.products)
-      .where(eq(schema.products.isPublished, true))
+      .leftJoin(schema.entrepreneurs, eq(schema.products.entrepreneurId, schema.entrepreneurs.id))
+      .where(
+        and(
+          eq(schema.products.isPublished, true),
+          or(isNull(schema.products.entrepreneurId), eq(schema.entrepreneurs.isPublished, true)),
+        ),
+      )
       .orderBy(asc(schema.products.position))
-    return rows.map((p) => ({
+    return rows.map(({ product: p }) => ({
       id: p.id,
       slug: p.slug,
       name: p.name,
@@ -278,6 +294,7 @@ export async function getPublishedProducts(): Promise<Product[]> {
       composition: p.composition,
       usageTips: p.usageTips,
       categoryId: p.categoryId,
+      entrepreneurId: p.entrepreneurId,
       priceAmount: p.priceAmount,
       currency: p.currency,
       compareAtAmount: p.compareAtAmount,
@@ -380,7 +397,7 @@ export async function getPageSections(): Promise<Record<string, PageSection>> {
   'use cache'
   cacheTag(CACHE_TAGS.pageSections)
 
-  const rows = await fromDb<PageSection[]>(
+  const rows = await fromDb<(Omit<PageSection, 'gallery'> & { gallery: string[] | null })[]>(
     () =>
       getDb()
         .select({
@@ -390,11 +407,113 @@ export async function getPageSections(): Promise<Record<string, PageSection>> {
           body: schema.pageSections.body,
           imageUrl: schema.pageSections.imageUrl,
           secondaryImageUrl: schema.pageSections.secondaryImageUrl,
+          gallery: schema.pageSections.gallery,
           buttonLabel: schema.pageSections.buttonLabel,
           buttonHref: schema.pageSections.buttonHref,
         })
         .from(schema.pageSections),
     fallbackPageSections,
   )
-  return Object.fromEntries(rows.map((s) => [s.key, s]))
+  return Object.fromEntries(rows.map((s) => [s.key, { ...s, gallery: s.gallery ?? [] }]))
+}
+
+// ---------------------------------------------------------------------------
+// Valeurs et principes d'action
+// ---------------------------------------------------------------------------
+
+export async function getOrganizationValues(): Promise<OrganizationValue[]> {
+  'use cache'
+  cacheTag(CACHE_TAGS.values)
+  return fromDb(async () => {
+    return getDb()
+      .select({
+        id: schema.organizationValues.id,
+        kind: schema.organizationValues.kind,
+        title: schema.organizationValues.title,
+        description: schema.organizationValues.description,
+      })
+      .from(schema.organizationValues)
+      .where(eq(schema.organizationValues.isPublished, true))
+      .orderBy(asc(schema.organizationValues.position))
+  }, [])
+}
+
+// ---------------------------------------------------------------------------
+// Vitrine de l'entrepreneur
+// ---------------------------------------------------------------------------
+
+export async function getSectors(): Promise<Sector[]> {
+  'use cache'
+  cacheTag(CACHE_TAGS.entrepreneurs)
+  return fromDb(async () => {
+    return getDb()
+      .select({
+        id: schema.sectors.id,
+        name: schema.sectors.name,
+        slug: schema.sectors.slug,
+        description: schema.sectors.description,
+      })
+      .from(schema.sectors)
+      .orderBy(asc(schema.sectors.position))
+  }, [])
+}
+
+export async function getPublishedEntrepreneurs(): Promise<Entrepreneur[]> {
+  'use cache'
+  cacheTag(CACHE_TAGS.entrepreneurs)
+  return fromDb(async () => {
+    const rows = await getDb()
+      .select()
+      .from(schema.entrepreneurs)
+      .where(eq(schema.entrepreneurs.isPublished, true))
+      .orderBy(asc(schema.entrepreneurs.position))
+    return rows.map((e) => ({
+      id: e.id,
+      slug: e.slug,
+      name: e.name,
+      ownerName: e.ownerName,
+      sectorId: e.sectorId,
+      programId: e.programId,
+      tagline: e.tagline,
+      story: e.story,
+      location: e.location,
+      // Droit à l'image : portrait publié seulement avec l'accord coché.
+      photoUrl: e.photoConsent ? e.photoUrl : null,
+      coverImageUrl: e.coverImageUrl,
+      whatsappNumber: e.whatsappNumber,
+      facebookUrl: e.facebookUrl,
+      isFoundation: e.isFoundation,
+      isFeatured: e.isFeatured,
+    }))
+  }, fallbackEntrepreneurs)
+}
+
+export async function getEntrepreneurBySlug(slug: string): Promise<Entrepreneur | null> {
+  const list = await getPublishedEntrepreneurs()
+  return list.find((e) => e.slug === slug) ?? null
+}
+
+// ---------------------------------------------------------------------------
+// Formulaires de participation (la date limite est vérifiée à la requête : isFormOpen)
+// ---------------------------------------------------------------------------
+
+export async function getPublishedProgramForms(): Promise<ProgramForm[]> {
+  'use cache'
+  cacheTag(CACHE_TAGS.programForms)
+  return fromDb(async () => {
+    const rows = await getDb()
+      .select()
+      .from(schema.programForms)
+      .where(eq(schema.programForms.isPublished, true))
+      .orderBy(asc(schema.programForms.position))
+    return rows.map((f) => ({
+      id: f.id,
+      programId: f.programId,
+      title: f.title,
+      intro: f.intro,
+      fields: f.fields,
+      closesAt: f.closesAt?.toISOString() ?? null,
+      successMessage: f.successMessage,
+    }))
+  }, [])
 }

@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import type { ComponentProps } from 'react'
 
-type Variant = 'primary' | 'outline' | 'whatsapp'
+type Variant = 'primary' | 'outline' | 'whatsapp' | 'onDark'
 
 const variants: Record<Variant, string> = {
   primary: 'bg-accent text-accent-ink hover:bg-ink hover:text-cream',
   outline: 'border border-ink/70 text-ink hover:bg-ink hover:text-cream',
   whatsapp: 'bg-whatsapp text-white hover:brightness-110 dark:text-[#10261a]',
+  onDark: 'border-2 border-white/80 text-white hover:bg-white hover:text-navy',
 }
 
 interface ButtonLinkProps extends ComponentProps<typeof Link> {

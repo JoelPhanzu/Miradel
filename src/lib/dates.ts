@@ -23,3 +23,17 @@ const longDateFormatter = new Intl.DateTimeFormat('fr-FR', {
 export function formatLongDate(date: Date | string): string {
   return longDateFormatter.format(typeof date === 'string' ? new Date(date) : date)
 }
+
+const deadlineFormatter = new Intl.DateTimeFormat('fr-FR', {
+  timeZone: KINSHASA_TIME_ZONE,
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+})
+
+/** « 20 novembre 2026 à 23:59 », heure de Kinshasa (dates limites des formulaires). */
+export function formatDeadline(date: Date | string): string {
+  return deadlineFormatter.format(typeof date === 'string' ? new Date(date) : date)
+}

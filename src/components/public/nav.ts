@@ -3,7 +3,7 @@ export const NAV_LINKS = [
   { href: '/nos-programmes', label: 'Nos programmes' },
   { href: '/notre-impact', label: 'Notre impact' },
   { href: '/transparence', label: 'Transparence' },
-  { href: '/boutique', label: 'Boutique' },
+  { href: '/vitrine', label: 'Vitrine de l’entrepreneur' },
   { href: '/actualites', label: 'Actualités' },
   { href: '/contact', label: 'Contact' },
 ] as const

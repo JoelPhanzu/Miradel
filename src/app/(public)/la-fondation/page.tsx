@@ -5,7 +5,14 @@ import { IdentityCard } from '@/components/public/IdentityCard'
 import { PageHeader } from '@/components/public/PageHeader'
 import { PhotoSlot } from '@/components/public/PhotoSlot'
 import { RichText, ToCompleteMark } from '@/components/public/ToComplete'
-import { getPageSections, getPartners, getSiteSettings, getTeamMembers } from '@/lib/data/public'
+import { ValuesSection } from '@/components/public/ValuesSection'
+import {
+  getOrganizationValues,
+  getPageSections,
+  getPartners,
+  getSiteSettings,
+  getTeamMembers,
+} from '@/lib/data/public'
 
 export const metadata: Metadata = {
   title: 'La Fondation',
@@ -16,11 +23,12 @@ export const metadata: Metadata = {
 const container = 'mx-auto max-w-[1320px] px-4 md:px-8'
 
 export default async function FoundationPage() {
-  const [sections, settings, team, partners] = await Promise.all([
+  const [sections, settings, team, partners, values] = await Promise.all([
     getPageSections(),
     getSiteSettings(),
     getTeamMembers(),
     getPartners(),
+    getOrganizationValues(),
   ])
   const intro = sections.foundation_intro
   const history = sections.foundation_history
@@ -30,9 +38,11 @@ export default async function FoundationPage() {
     <>
       <PageHeader title={intro?.title ?? 'La Fondation'} intro={intro?.body} />
 
-      <section className={`${container} grid gap-12 pb-16 md:grid-cols-[1fr_1fr] md:gap-20 md:pb-24`}>
+      <section
+        className={`${container} grid gap-12 pb-16 md:grid-cols-[1fr_1fr] md:gap-20 md:pb-24`}
+      >
         <div data-reveal>
-          <h2 className="font-display text-4xl font-medium">{history?.title ?? 'Notre histoire'}</h2>
+          <h2 className="font-display text-4xl font-bold">{history?.title ?? 'Notre histoire'}</h2>
           <div className="mt-6">
             <RichText text={history?.body} />
           </div>
@@ -46,10 +56,17 @@ export default async function FoundationPage() {
         />
       </section>
 
+      <ValuesSection
+        title={sections.home_values?.title ?? 'Nos valeurs et principes d’action'}
+        intro={sections.home_values?.body}
+        values={values}
+        surface="on-navy"
+      />
+
       <section className="bg-cream-deep">
         <div className={`${container} grid gap-12 py-16 md:grid-cols-2 md:gap-20 md:py-24`}>
           <div data-reveal>
-            <h2 className="font-display text-4xl font-medium">
+            <h2 className="font-display text-4xl font-bold">
               {governance?.title ?? 'Gouvernance'}
             </h2>
             <div className="mt-6">
@@ -57,7 +74,7 @@ export default async function FoundationPage() {
             </div>
           </div>
           <div data-reveal>
-            <h2 className="font-display text-4xl font-medium">Identité</h2>
+            <h2 className="font-display text-4xl font-bold">Identité</h2>
             <div className="mt-6">
               <IdentityCard settings={settings} />
             </div>

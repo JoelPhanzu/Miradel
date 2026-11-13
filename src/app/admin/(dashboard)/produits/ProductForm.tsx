@@ -21,11 +21,14 @@ export function ProductForm({
   product,
   categories,
   programs,
+  entrepreneurs,
 }: {
   product?: Product
   categories: { id: string; name: string }[]
   programs: { id: string; title: string }[]
+  entrepreneurs: { id: string; name: string; isFoundation: boolean }[]
 }) {
+  const foundationId = entrepreneurs.find((e) => e.isFoundation)?.id
   return (
     <>
       {product && (
@@ -46,7 +49,7 @@ export function ProductForm({
         <FormSection title="Affichage">
           <ToggleField
             name="isPublished"
-            label="Publier dans la boutique"
+            label="Publier dans la Vitrine de l’entrepreneur"
             description="Décochez pour masquer le produit sans le supprimer."
             defaultChecked={product?.isPublished ?? true}
           />
@@ -61,6 +64,20 @@ export function ProductForm({
         <FormSection title="Fiche produit">
           <TextField name="name" label="Nom du produit" defaultValue={product?.name} />
           <SelectField
+            name="entrepreneurId"
+            label="Vendu par"
+            defaultValue={product?.entrepreneurId ?? foundationId}
+            // Sans fiche « fondation » (ne devrait pas arriver), vide = la fondation.
+            emptyLabel={foundationId ? undefined : 'La fondation'}
+            options={[...entrepreneurs]
+              .sort((a, b) => Number(b.isFoundation) - Number(a.isFoundation))
+              .map((e) => ({
+                value: e.id,
+                label: e.isFoundation ? `La fondation (${e.name})` : e.name,
+              }))}
+            hint="Produits de la fondation : panier et commande enregistrée. Produits d’un entrepreneur : commande directe sur son WhatsApp."
+          />
+          <SelectField
             name="categoryId"
             label="Catégorie"
             defaultValue={product?.categoryId}
@@ -73,7 +90,11 @@ export function ProductForm({
             defaultValue={product?.packaging}
             hint="Ex. « Bidon de 1 L », « Pot de 250 g »"
           />
-          <TextAreaField name="description" label="Description" defaultValue={product?.description} />
+          <TextAreaField
+            name="description"
+            label="Description"
+            defaultValue={product?.description}
+          />
           <TextAreaField
             name="composition"
             label="Ingrédients ou composition"

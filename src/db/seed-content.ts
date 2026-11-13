@@ -45,9 +45,21 @@ export async function seedContentIfEmpty(db: MySql2Database<typeof schema>): Pro
         position: i + 1,
       })),
     )
+    // La fondation est la première vitrine : ses produits se commandent avec le panier.
+    const foundationId = crypto.randomUUID()
+    await tx.insert(schema.entrepreneurs).values({
+      id: foundationId,
+      name: seedSettings.organizationName,
+      slug: 'fondation-miradel-fevepa',
+      isFoundation: true,
+      isPublished: true,
+      isFeatured: true,
+      position: 0,
+    })
     await tx.insert(schema.products).values(
       seedProducts.map(([category, name, slug], i) => ({
         categoryId: categoryIds[category],
+        entrepreneurId: foundationId,
         name,
         slug,
         description: TO_COMPLETE,
@@ -63,7 +75,8 @@ export async function seedContentIfEmpty(db: MySql2Database<typeof schema>): Pro
       })),
     )
 
-    await tx.insert(schema.pageSections).values(seedPageSections)
+    // Certaines sections ont déjà été créées par une migration : on ne les double pas.
+    await tx.insert(schema.pageSections).ignore().values(seedPageSections)
   })
   return true
 }

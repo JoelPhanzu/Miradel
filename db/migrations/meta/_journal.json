@@ -8,6 +8,27 @@
       "when": 1791740215071,
       "tag": "0000_schema_initial",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1794569665786,
+      "tag": "0001_vitrine_formulaires_valeurs",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1794569791839,
+      "tag": "0002_donnees_vitrine",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1794580070524,
+      "tag": "0003_nom_vitrine_entrepreneur",
+      "breakpoints": true
     }
   ]
 }

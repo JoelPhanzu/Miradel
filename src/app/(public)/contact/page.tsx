@@ -83,7 +83,7 @@ export default async function ContactPage() {
         </div>
 
         <section aria-labelledby="contact-form-title">
-          <h2 id="contact-form-title" className="font-display text-3xl font-medium">
+          <h2 id="contact-form-title" className="font-display text-3xl font-bold">
             Nous écrire
           </h2>
           <div className="mt-6">

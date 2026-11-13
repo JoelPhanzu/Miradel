@@ -42,16 +42,42 @@ saisie reste à l'écran : appuyez de nouveau sur **Enregistrer**.
   publication.
 - **Documents** : statuts, agréments, rapports (PDF de 10 Mo maximum ; un avertissement s'affiche
   au-delà de 3 Mo). Ils apparaissent sur la page **Transparence** avec leur taille.
+- **Formulaires de participation** (menu Suivi) : un formulaire d'inscription par programme
+  (ou plusieurs). Vous choisissez les **questions** (texte, téléphone, e-mail, nombre, date,
+  liste déroulante, choix unique, cases à cocher, case d'accord), si elles sont obligatoires, et
+  la **date et l'heure limites** (heure de Kinshasa). Le formulaire s'affiche en bas de la page du
+  programme ; **passé la date limite, il disparaît** (un avis « inscriptions closes » le remplace)
+  et le site refuse les envois. Les réponses se lisent dans « Voir les réponses » : statut,
+  bouton « Répondre sur WhatsApp », téléchargement pour Excel. Modifier une question ne change
+  pas les réponses déjà reçues.
+- **Valeurs et principes** : chaque valeur (ce en quoi la fondation croit) ou principe d'action
+  (sa manière d'agir), avec une courte explication. Affichés sur l'accueil et sur La Fondation.
 - **Équipe**, **Partenaires**, **Témoignages** (accord écrit de la personne obligatoire ;
   pour un mineur, accord d'un parent ou tuteur).
-- **Textes et images du site** : bandeau d'accueil, mission, histoire, gouvernance, textes des
-  pages, conditions générales et politique de confidentialité.
+- **Textes et images du site** : bandeau d'accueil (photo principale + 2 ou 3 photos qui
+  défilent : femmes et jeunes entrepreneurs **réels**, au travail, avec leur accord), mission,
+  histoire, gouvernance, textes des pages, conditions générales et politique de confidentialité.
   Mise en forme : une ligne vide entre deux paragraphes, `## ` pour un titre, `- ` pour une liste,
-  `**gras**`, et `*mot*` en italique dans les grands titres.
+  `**gras**`, et `*mot*` pour colorer un mot dans les grands titres.
 
-## La boutique
+## La vitrine de l'entrepreneur
 
-- **Produits** : nom, catégorie, contenance, description, composition, conseils, programme
+La vitrine présente les produits **de la fondation** et ceux **des entrepreneurs qu'elle
+accompagne**, classés par secteur d'activité ; les visiteurs peuvent chercher un produit et
+filtrer par catégorie ou par secteur.
+
+- **Entrepreneurs** : une fiche par vitrine — nom de l'activité, porteur ou porteuse de projet,
+  secteur, programme d'accompagnement, présentation, histoire, commune, photo de l'activité,
+  portrait (affiché seulement si **« Autorisation de diffusion obtenue »** est cochée), numéro
+  WhatsApp et page Facebook. « Mettre en avant » l'affiche sur l'accueil. La fondation a sa
+  propre vitrine (non supprimable). Une vitrine qui a encore des produits ne peut pas être
+  supprimée : masquez-la (ses produits disparaissent aussi du site).
+- **Secteurs d'activité** : ex. couture, transformation agricole… dans l'ordre d'affichage.
+- **Comment se commande un produit** : produit **de la fondation** → panier, commande
+  enregistrée dans « Commandes », message WhatsApp à la fondation. Produit **d'un
+  entrepreneur** → pas de panier : bouton « Commander auprès de … » qui ouvre WhatsApp chez
+  l'entrepreneur (ou chez la fondation si son numéro n'est pas renseigné).
+- **Produits** : nom, **vendu par** (la fondation ou un entrepreneur), catégorie, contenance, description, composition, conseils, programme
   d'origine, photos (la première est la principale), stock facultatif.
   **Prix** : laissez vide tant qu'il n'est pas confirmé → le site affiche « Prix à confirmer » et
   propose « Demander le prix sur WhatsApp ». Choisissez la devise (FC ou USD).

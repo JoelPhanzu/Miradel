@@ -126,7 +126,7 @@ export function Checkout({
     const paysAhead = done.payment === 'mobile_money' || done.payment === 'virement'
     return (
       <div className="border-line grid gap-6 border p-6 md:p-10" role="status">
-        <h2 className="font-display text-4xl font-medium">Merci pour votre commande</h2>
+        <h2 className="font-display text-4xl font-bold">Merci pour votre commande</h2>
         <p className="max-w-[52ch]">
           Envoyez le message WhatsApp qui vient de s’ouvrir : l’équipe de la fondation confirme la
           disponibilité, le total et la remise de votre commande par retour de message.
@@ -172,10 +172,10 @@ export function Checkout({
       <div className="border-line border p-6 md:p-10">
         <p className="font-display text-3xl">Votre panier est vide.</p>
         <Link
-          href="/boutique"
+          href="/vitrine"
           className="bg-accent text-accent-ink mt-6 inline-flex min-h-12 items-center rounded-full px-6 text-sm font-semibold"
         >
-          Voir la boutique
+          Voir la Vitrine de l’entrepreneur
         </Link>
       </div>
     )
@@ -355,8 +355,8 @@ export function Checkout({
                 bankDetails={bankDetails}
               />
               <p className="text-ink-soft mt-2">
-                Payez après confirmation de la commande, puis envoyez la référence de la
-                transaction sur WhatsApp.
+                Payez après confirmation de la commande, puis envoyez la référence de la transaction
+                sur WhatsApp.
               </p>
             </div>
           )}

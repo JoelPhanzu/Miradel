@@ -32,8 +32,8 @@ export default async function MessagesPage({ searchParams }: PageProps<'/admin/m
     }`
   const link = (params: { statut?: string; type?: string }) => {
     const query = new URLSearchParams(
-      Object.entries({ statut: status, type: kind, ...params }).filter(
-        (e): e is [string, string] => Boolean(e[1]),
+      Object.entries({ statut: status, type: kind, ...params }).filter((e): e is [string, string] =>
+        Boolean(e[1]),
       ),
     ).toString()
     return `/admin/messages${query ? `?${query}` : ''}`

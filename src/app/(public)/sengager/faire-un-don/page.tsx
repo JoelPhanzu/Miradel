@@ -28,14 +28,14 @@ export default async function DonatePage() {
       <div className={`${container} grid gap-14 pb-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20`}>
         <div className="grid content-start gap-10">
           <section>
-            <h2 className="font-display text-3xl font-medium">À quoi sert votre don</h2>
+            <h2 className="font-display text-3xl font-bold">À quoi sert votre don</h2>
             <div className="mt-4">
               <RichText text={intro?.body} />
             </div>
           </section>
 
           <section className="bg-cream-deep grid gap-6 p-6 md:p-8">
-            <h2 className="font-display text-3xl font-medium">1. Envoyer votre don</h2>
+            <h2 className="font-display text-3xl font-bold">1. Envoyer votre don</h2>
             <div>
               <p className="font-semibold">Mobile money</p>
               <PaymentDetails
@@ -61,7 +61,7 @@ export default async function DonatePage() {
         </div>
 
         <section>
-          <h2 className="font-display text-3xl font-medium">2. Déclarer votre don</h2>
+          <h2 className="font-display text-3xl font-bold">2. Déclarer votre don</h2>
           <p className="text-ink-soft mt-2">
             Quelques informations pour que l’équipe retrouve votre paiement et vous remercie.
           </p>

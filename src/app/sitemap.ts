@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import {
   getProductCategories,
+  getPublishedEntrepreneurs,
   getPublishedPosts,
   getPublishedPrograms,
   getPublishedProducts,
@@ -9,11 +10,12 @@ import {
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3420'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [programs, products, categories, posts] = await Promise.all([
+  const [programs, products, categories, posts, entrepreneurs] = await Promise.all([
     getPublishedPrograms(),
     getPublishedProducts(),
     getProductCategories(),
     getPublishedPosts(),
+    getPublishedEntrepreneurs(),
   ])
   const pages = [
     '',
@@ -21,7 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/nos-programmes',
     '/notre-impact',
     '/transparence',
-    '/boutique',
+    '/vitrine',
+    '/vitrine/produits',
     '/promotions',
     '/sengager',
     '/sengager/faire-un-don',
@@ -33,7 +36,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...pages.map((path) => ({ url: `${SITE}${path}`, changeFrequency: 'weekly' as const })),
     ...programs.map((p) => ({ url: `${SITE}/nos-programmes/${p.slug}` })),
-    ...categories.map((c) => ({ url: `${SITE}/boutique/c/${c.slug}` })),
+    ...entrepreneurs.map((e) => ({ url: `${SITE}/vitrine/${e.slug}` })),
+    ...categories.map((c) => ({ url: `${SITE}/vitrine/produits?categorie=${c.slug}` })),
     ...products.map((p) => ({ url: `${SITE}/produits/${p.slug}` })),
     ...posts.map((p) => ({ url: `${SITE}/actualites/${p.slug}`, lastModified: p.publishedAt })),
   ]

@@ -79,7 +79,11 @@ export const donationSchema = z
     donorName: z.string().trim().max(120).optional().default(''),
     donorPhone: phoneField,
     donorEmail: optionalEmail,
-    amount: z.number().int('Montant invalide').positive('Indiquez le montant du don').max(2_000_000_000),
+    amount: z
+      .number()
+      .int('Montant invalide')
+      .positive('Indiquez le montant du don')
+      .max(2_000_000_000),
     currency: z.enum(CURRENCIES),
     paymentMethod: z.enum(DONATION_METHODS),
     transactionReference: z.string().trim().max(80).optional().default(''),

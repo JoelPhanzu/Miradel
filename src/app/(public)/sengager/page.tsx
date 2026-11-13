@@ -29,12 +29,12 @@ export default async function EngagePage() {
       <section className="bg-accent text-accent-ink">
         <div className={`${container} flex flex-wrap items-center justify-between gap-8 py-14`}>
           <div>
-            <h2 className="font-display text-4xl font-medium md:text-5xl">
+            <h2 className="font-display text-4xl font-bold md:text-5xl">
               {donate?.title ?? 'Faire un don'}
             </h2>
             <p className="mt-3 max-w-[52ch] opacity-90">
-              Par mobile money ou virement, puis une déclaration en ligne pour que l’équipe
-              confirme la réception.
+              Par mobile money ou virement, puis une déclaration en ligne pour que l’équipe confirme
+              la réception.
             </p>
           </div>
           <Link
@@ -48,9 +48,12 @@ export default async function EngagePage() {
         </div>
       </section>
 
-      <section id="benevolat" className={`${container} grid scroll-mt-24 gap-10 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-20 md:py-24`}>
+      <section
+        id="benevolat"
+        className={`${container} grid scroll-mt-24 gap-10 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-20 md:py-24`}
+      >
         <div data-reveal>
-          <h2 className="font-display text-4xl font-medium md:text-5xl">
+          <h2 className="font-display text-4xl font-bold md:text-5xl">
             {volunteer?.title ?? 'Devenir bénévole'}
           </h2>
           <div className="mt-6">
@@ -61,9 +64,11 @@ export default async function EngagePage() {
       </section>
 
       <section id="partenariat" className="bg-cream-deep scroll-mt-24">
-        <div className={`${container} grid gap-10 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-20 md:py-24`}>
+        <div
+          className={`${container} grid gap-10 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-20 md:py-24`}
+        >
           <div data-reveal>
-            <h2 className="font-display text-4xl font-medium md:text-5xl">
+            <h2 className="font-display text-4xl font-bold md:text-5xl">
               {partnership?.title ?? 'Devenir partenaire'}
             </h2>
             <div className="mt-6">

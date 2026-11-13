@@ -4,6 +4,7 @@ import {
   AdminForm,
   FormSection,
   ImageField,
+  ImagesField,
   TextAreaField,
   TextField,
 } from '@/components/admin/form'
@@ -62,9 +63,17 @@ export default async function SectionPage({ params }: PageProps<'/admin/pages/[k
             {has('imageUrl') && (
               <ImageField
                 name="imageUrl"
-                label={has('secondaryImageUrl') ? 'Photo principale' : 'Photo'}
+                label={has('secondaryImageUrl') || has('gallery') ? 'Photo principale' : 'Photo'}
                 defaultValue={row?.imageUrl}
                 hint="Une vraie photo de la fondation (action de terrain, atelier, équipe), avec l'accord des personnes photographiées."
+              />
+            )}
+            {has('gallery') && (
+              <ImagesField
+                name="gallery"
+                label="Autres photos du diaporama"
+                defaultValue={row?.gallery ?? []}
+                hint="Elles défilent après la photo principale (2 ou 3 suffisent : chaque photo pèse sur les forfaits mobiles)."
               />
             )}
             {has('secondaryImageUrl') && (
@@ -89,13 +98,16 @@ export default async function SectionPage({ params }: PageProps<'/admin/pages/[k
                 name="buttonHref"
                 label="Lien"
                 defaultValue={row?.buttonHref}
-                hint="/sengager, /boutique, /nos-programmes…"
+                hint="/sengager, /vitrine, /nos-programmes…"
               />
             </div>
           </FormSection>
         )}
         {/* Conserve les champs non utilisés par cette section. */}
         {!has('imageUrl') && <input type="hidden" name="imageUrl" value={row?.imageUrl ?? ''} />}
+        {!has('gallery') && (
+          <input type="hidden" name="gallery" value={JSON.stringify(row?.gallery ?? [])} />
+        )}
         {!has('secondaryImageUrl') && (
           <input type="hidden" name="secondaryImageUrl" value={row?.secondaryImageUrl ?? ''} />
         )}

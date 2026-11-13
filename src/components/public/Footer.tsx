@@ -31,7 +31,7 @@ export async function Footer() {
   )
 
   return (
-    <footer className="border-line border-t">
+    <footer className="on-navy">
       <div className="mx-auto grid max-w-[1320px] gap-12 px-4 py-14 md:px-8 lg:grid-cols-[1.2fr_0.8fr_1fr_1.3fr]">
         <div>
           <Logo />

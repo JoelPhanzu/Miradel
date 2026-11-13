@@ -1,7 +1,7 @@
 /** Sections éditables du site, avec un nom compréhensible et les champs utilisés. */
-type Field = 'title' | 'body' | 'imageUrl' | 'secondaryImageUrl' | 'button'
+type Field = 'title' | 'body' | 'imageUrl' | 'secondaryImageUrl' | 'gallery' | 'button'
 
-const EMPHASIS_HELP = 'Entourez un mot d’astérisques pour l’écrire en italique : « les *jeunes* ».'
+const EMPHASIS_HELP = 'Entourez un mot d’astérisques pour le colorer : « un *métier* ».'
 const MARKDOWN_HELP =
   'Paragraphes séparés par une ligne vide. « ## » pour un titre, « - » pour une liste, **gras**.'
 
@@ -16,8 +16,15 @@ export const PAGE_SECTIONS: {
     key: 'home_hero',
     label: 'Bandeau principal',
     page: 'Accueil',
-    fields: ['title', 'body', 'imageUrl', 'button'],
-    help: `${EMPHASIS_HELP} Photo réelle uniquement, avec l’accord des personnes photographiées.`,
+    fields: ['title', 'body', 'imageUrl', 'gallery', 'button'],
+    help: `${EMPHASIS_HELP} Photos réelles uniquement (femmes et jeunes entrepreneurs en activité), avec l’accord des personnes photographiées.`,
+  },
+  {
+    key: 'home_values',
+    label: 'Valeurs et principes d’action (titre)',
+    page: 'Accueil',
+    fields: ['title', 'body'],
+    help: 'Les valeurs elles-mêmes se saisissent dans « Valeurs et principes ».',
   },
   {
     key: 'home_mission',
@@ -34,7 +41,7 @@ export const PAGE_SECTIONS: {
   { key: 'home_impact', label: 'Section impact', page: 'Accueil', fields: ['title', 'button'] },
   {
     key: 'home_shop',
-    label: 'Section boutique',
+    label: 'Section vitrine de l’entrepreneur',
     page: 'Accueil',
     fields: ['title', 'body', 'button'],
   },
@@ -72,7 +79,12 @@ export const PAGE_SECTIONS: {
     page: 'La Fondation',
     fields: ['title'],
   },
-  { key: 'programs_intro', label: 'Introduction', page: 'Nos programmes', fields: ['title', 'body'] },
+  {
+    key: 'programs_intro',
+    label: 'Introduction',
+    page: 'Nos programmes',
+    fields: ['title', 'body'],
+  },
   { key: 'impact_intro', label: 'Introduction', page: 'Notre impact', fields: ['title', 'body'] },
   {
     key: 'transparency_intro',
@@ -80,7 +92,24 @@ export const PAGE_SECTIONS: {
     page: 'Transparence',
     fields: ['title', 'body'],
   },
-  { key: 'shop_intro', label: 'Introduction', page: 'Boutique', fields: ['title', 'body'] },
+  {
+    key: 'shop_intro',
+    label: 'Introduction',
+    page: 'Vitrine de l’entrepreneur',
+    fields: ['title', 'body'],
+  },
+  {
+    key: 'vitrine_entrepreneurs_intro',
+    label: 'Titre des entrepreneurs',
+    page: 'Vitrine de l’entrepreneur',
+    fields: ['title', 'body'],
+  },
+  {
+    key: 'vitrine_products_intro',
+    label: 'Titre du catalogue des produits',
+    page: 'Vitrine de l’entrepreneur',
+    fields: ['title', 'body'],
+  },
   {
     key: 'promotions_intro',
     label: 'Introduction',

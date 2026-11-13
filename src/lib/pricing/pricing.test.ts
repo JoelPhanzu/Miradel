@@ -103,9 +103,7 @@ describe('getEffectivePrice', () => {
     const fromSix = promo({ id: 'lot', minQuantity: 6 })
     expect(getEffectivePrice(yaourt, 5, [fromSix], TUESDAY_NOON).amount).toBe(25000)
     expect(getEffectivePrice(yaourt, 6, [fromSix], TUESDAY_NOON).amount).toBe(20000)
-    expect(getEffectivePrice(yaourt, 12, [fromSix], TUESDAY_NOON).appliedPromotion?.id).toBe(
-      'lot',
-    )
+    expect(getEffectivePrice(yaourt, 12, [fromSix], TUESDAY_NOON).appliedPromotion?.id).toBe('lot')
   })
 
   it('ne cumule pas : garde la promotion donnant le prix le plus bas', () => {
@@ -124,9 +122,9 @@ describe('getEffectivePrice', () => {
       discountValue: 5000,
       priority: 5,
     })
-    expect(
-      getEffectivePrice(yaourt, 1, [percent, fixed], TUESDAY_NOON).appliedPromotion?.id,
-    ).toBe('fix')
+    expect(getEffectivePrice(yaourt, 1, [percent, fixed], TUESDAY_NOON).appliedPromotion?.id).toBe(
+      'fix',
+    )
   })
 
   it('ne descend jamais sous 0 avec un montant fixe supérieur au prix', () => {
@@ -187,6 +185,7 @@ describe('productPrice', () => {
     composition: null,
     usageTips: null,
     categoryId: 'cat-agro',
+    entrepreneurId: null,
     priceAmount: 10000,
     currency: 'CDF',
     compareAtAmount: null,

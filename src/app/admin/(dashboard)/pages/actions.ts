@@ -6,6 +6,7 @@ import { PAGE_SECTIONS } from '@/lib/admin/sections'
 import {
   audit,
   failure,
+  jsonField,
   optionalText,
   refresh,
   success,
@@ -31,6 +32,7 @@ export async function saveSection(
     body: optionalText(fd, 'body'),
     imageUrl: optionalText(fd, 'imageUrl'),
     secondaryImageUrl: optionalText(fd, 'secondaryImageUrl'),
+    gallery: jsonField<string[]>(fd, 'gallery', []).filter((u) => typeof u === 'string'),
     buttonLabel: optionalText(fd, 'buttonLabel'),
     buttonHref,
   }
